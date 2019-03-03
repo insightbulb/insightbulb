@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Insightbulb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static', filename='bootstrap-4.3.1-dist/css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 </head>
 <body>
-     <div id="mount-point">
-         <p>Hello world...</p>
-         <a href='/toggle-on/'>Toggle on!</a>
-         <br/>
-         <a href='/toggle-off/'>Toggle off!</a>
-         <br/>
-         <a href='/toggle-flow/'>Toggle flow!</a>
-     </div>
+<div id="mount-point">
+    <h1 style="margin-left: 8px">Insightbulb</h1>
+    <h5 style="margin-left: 8px">light bulbs that inform!</h5>
+    <br/>
+    <form action="/toggle-on/" method="post">
+        <button style="margin-left: 32px" class="btn-outline-primary" name="ON" type="submit">ON</button>
+    </form>
+    <br/>
+    <form action="/toggle-off/" method="post">
+        <button style="margin-left: 32px" class="btn-outline-danger" name="ON" type="submit">OFF</button>
+    </form>
+    <br/>
+    <form action="/toggle-flow/" method="post">
+        <button style="margin-left: 32px" class="btn-outline-info" name="ON" type="submit">FLOW</button>
+    </form>
+</div>
 </body>
 </html>

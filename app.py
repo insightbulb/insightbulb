@@ -6,33 +6,40 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    bulbs = discover_bulbs()
-    print(bulbs[0].get("ip"))
     return render_template('index.html')
 
 
 # Turn the light on
-@app.route('/toggle-on/')
+@app.route('/toggle-on/', methods=['POST'])
 def turn_on():
     bulbs = discover_bulbs()
+    if bulbs.__len__() == 0:
+        return render_template('index.html')
+
     my_bulb = Bulb(bulbs[0].get("ip"))
     my_bulb.turn_on()
-    return "Lights on!"
+    return render_template('index.html')
 
 
 # Turn the light off
-@app.route('/toggle-off/')
+@app.route('/toggle-off/', methods=['POST'])
 def turn_off():
     bulbs = discover_bulbs()
+    if bulbs.__len__() == 0:
+        return render_template('index.html')
+
     my_bulb = Bulb(bulbs[0].get("ip"))
     my_bulb.turn_off()
-    return "Lights off!"
+    return render_template('index.html')
 
 
 # This is a simple example of a flow event
-@app.route('/toggle-flow/')
+@app.route('/toggle-flow/', methods=['POST'])
 def simple_flow():
     bulbs = discover_bulbs()
+    if bulbs.__len__() == 0:
+        return render_template('index.html')
+
     my_bulb = Bulb(bulbs[0].get("ip"))
     transitions = [
         TemperatureTransition(1700, duration=1000),
@@ -47,7 +54,7 @@ def simple_flow():
     )
 
     my_bulb.start_flow(flow1)
-    return 'Flowing!'
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

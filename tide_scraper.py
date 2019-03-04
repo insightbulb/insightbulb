@@ -8,7 +8,7 @@ status, response = http.request('https://tidesandcurrents.noaa.gov/stations.html
 def get_regions():
     soup = BeautifulSoup(response, 'html.parser')
     regions = soup.findAll("span", attrs={'class': None})
-    regions.remove(regions[regions.__len__() - 1])
+    regions.remove(regions[len(regions) - 1])
     return regions
 
 

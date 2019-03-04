@@ -7,10 +7,10 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def index():
+    # Get the region data on landing
     us_regions = []
     for region in get_regions():
         us_regions.append(region.text)
-    print(us_regions)
     return render_template('index.html', us_regions=us_regions)
 
 
@@ -18,7 +18,7 @@ def index():
 @app.route('/toggle-on/', methods=['POST'])
 def turn_on():
     bulbs = discover_bulbs()
-    if bulbs.__len__() == 0:
+    if len(bulbs) is 0:
         return render_template('index.html')
 
     my_bulb = Bulb(bulbs[0].get("ip"))
@@ -30,7 +30,7 @@ def turn_on():
 @app.route('/toggle-off/', methods=['POST'])
 def turn_off():
     bulbs = discover_bulbs()
-    if bulbs.__len__() == 0:
+    if len(bulbs) is 0:
         return render_template('index.html')
 
     my_bulb = Bulb(bulbs[0].get("ip"))
@@ -42,7 +42,7 @@ def turn_off():
 @app.route('/toggle-flow/', methods=['POST'])
 def simple_flow():
     bulbs = discover_bulbs()
-    if bulbs.__len__() == 0:
+    if len(bulbs) is 0:
         return render_template('index.html')
 
     my_bulb = Bulb(bulbs[0].get("ip"))

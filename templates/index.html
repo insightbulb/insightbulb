@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Insightbulb</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -13,6 +14,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
     </script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 </head>
@@ -32,6 +38,13 @@
     <form action="/toggle-flow/" method="post">
         <button style="margin-left: 32px" class="btn-outline-info" name="ON" type="submit">FLOW</button>
     </form>
+    <br/>
+
+    <select style="margin-right: 8px" name="region" method="GET" action="/">
+        {% for us_region_element in us_regions %}
+            <option value="{{ us_region_element }}" selected>{{ us_region_element }} </option>
+        {% endfor %}
+    </select>
 </div>
 </body>
 </html>

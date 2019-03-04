@@ -1,12 +1,17 @@
 from flask import Flask, render_template
 from yeelight import *
+from tide_scraper import *
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    us_regions = []
+    for region in get_regions():
+        us_regions.append(region.text)
+    print(us_regions)
+    return render_template('index.html', us_regions=us_regions)
 
 
 # Turn the light on

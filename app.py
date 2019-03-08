@@ -49,11 +49,12 @@ def simple_flow():
     transitions = [
         TemperatureTransition(1700, duration=1000),
         SleepTransition(duration=1000),
-        TemperatureTransition(6500, duration=1000)
+        TemperatureTransition(6500, duration=1000),
+        TemperatureTransition(500, 500),
     ]
 
     flow1 = Flow(
-        count=2,
+        count=4,
         action=Flow.actions.recover,
         transitions=transitions
     )

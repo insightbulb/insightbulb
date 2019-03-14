@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from yeelight import *
 from tide_scraper import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 
 @app.route('/', methods=['GET'])
@@ -15,7 +15,7 @@ def index():
 
 
 # Turn the light on
-@app.route('/toggle-on/', methods=['POST'])
+@app.route('/turn-on')
 def turn_on():
     bulbs = discover_bulbs()
     if len(bulbs) is 0:
@@ -27,7 +27,7 @@ def turn_on():
 
 
 # Turn the light off
-@app.route('/toggle-off/', methods=['POST'])
+@app.route('/turn-off')
 def turn_off():
     bulbs = discover_bulbs()
     if len(bulbs) is 0:
@@ -39,7 +39,7 @@ def turn_off():
 
 
 # This is a simple example of a flow event
-@app.route('/toggle-flow/', methods=['POST'])
+@app.route('/flow')
 def simple_flow():
     bulbs = discover_bulbs()
     if len(bulbs) is 0:
@@ -64,4 +64,4 @@ def simple_flow():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

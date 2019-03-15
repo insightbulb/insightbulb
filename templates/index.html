@@ -46,14 +46,14 @@
 					</a>
 				</form>
 			</div>
-			<div class="row">
-				<div class="col">
-					<select style="margin-left: 8px" name="region" method="GET" action="/">
-						{% for us_region_element in us_regions %}
-							<option value="{{ us_region_element }}" selected>{{ us_region_element }} </option>
-						{% endfor %}
-					</select>
-				</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<select style="margin-left: 8px" name="region" method="GET" action="/">
+					{% for us_region_element in us_regions %}
+						<option value="{{ us_region_element }}" selected>{{ us_region_element }} </option>
+					{% endfor %}
+				</select>
 			</div>
 		</div>
 	</div>

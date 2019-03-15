@@ -21,38 +21,36 @@
 </head>
 <body>
 <div id="mount-point">
-    <div class="container-fluid text-center">
-        <h1 style="margin-left: 8px">Insightbulb</h1>
-        <h5 style="margin-left: 8px">light bulbs that inform!</h5>
+    <h1 style="margin-left: 8px">Insightbulb</h1>
+    <h5 style="margin-left: 8px">light bulbs that inform!</h5>
+    <br/>
 
-        <div class="row">
-            <div class="col">
-                <form action="/toggle-on/" method="post">
-                    <button class="btn-outline-primary" name="ON" type="submit">ON</button>
-                </form>
-            </div>
-            <div class="col">
-                <form action="/toggle-off/" method="post">
-                    <button class="btn-outline-danger" name="ON" type="submit">OFF</button>
-                </form>
-            </div>
-            <div class="col">
-                <form action="/toggle-flow/" method="post">
-                    <button class="btn-outline-info" name="ON" type="submit">FLOW</button>
-                </form>
-            </div>
-        </div>
+    <form>
+        <a href="#" id="turn-on">
+            <button style="margin-left: 32px" class="btn-outline-primary" name="ON" type="submit">ON</button>
+        </a>
+    </form>
+    <br/>
 
-        <div class="row">
-            <div class="col">
-                <select style="margin-left: 8px" name="region" method="GET" action="/">
-                    {% for us_region_element in us_regions %}
-                        <option value="{{ us_region_element }}" selected>{{ us_region_element }} </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-    </div>
+    <form>
+        <a href="#" id="turn-off">
+            <button style="margin-left: 32px" class="btn-outline-danger" name="OFF" type="submit">OFF</button>
+        </a>
+    </form>
+    <br/>
+
+    <form>
+        <a href="#" id="flow">
+            <button style="margin-left: 32px" class="btn-outline-info" name="FLOW" type="submit">FLOW</button>
+        </a>
+    </form>
+    <br/>
+
+    <select style="margin-left: 8px" name="region" method="GET" action="/">
+        {% for us_region_element in us_regions %}
+            <option value="{{ us_region_element }}" selected>{{ us_region_element }} </option>
+        {% endfor %}
+    </select>
 </div>
 </body>
 </html>

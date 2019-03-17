@@ -3,6 +3,7 @@ from yeelight import *
 from tide_scraper import *
 
 app = Flask(__name__, static_url_path='/static')
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 @app.route('/', methods=['GET'])

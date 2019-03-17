@@ -15,7 +15,7 @@ If you don't see a version number run:
 After, ```cd``` into the project directory and run:
 * ```virtualenv venv```
 
-If you are using an IDE like pycharm, the environment will be most likely
+If you are using an IDE like pycharm, the environment will most likely
 be started automatically for you.  If you are using a lightweight editor, you 
 will probably have to run ```$ . venv/bin/activate``` for macOS and Linux.
 If you are a windows user: ```$ venv/Scripts/activate``` is for you.
@@ -26,7 +26,18 @@ For a more detailed description, see the easy to read Flask [docs](http://flask.
 Once your environment is set up run the following:
 * ```$ pip install flask```
 * ```$ pip install yeelight```
+* ```$ pip install bs4```
+* ```$ pip install httplib2```
 * ```$ export FLASK_APP=app.py```
+
+(TODO: automate these dependencies)
+
+You'll also want to be making changes in the development environment:
+
+* ```$ export FLASK_ENV=development```
+
+To get things up and running:
+
 * ```$ flask run```
 
 You're all set!

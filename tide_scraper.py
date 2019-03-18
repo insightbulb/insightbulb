@@ -15,5 +15,8 @@ def get_regions():
 def get_stations():
     soup = BeautifulSoup(response, 'html.parser')
     stations = soup.findAll("div", attrs={'class': 'span4 station'})
-    for station in stations:
-        print(station.text)
+
+    # For checking the values...
+    # for station in stations:
+    #      print(station.text)
+    return stations

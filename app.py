@@ -3,6 +3,7 @@ from yeelight import *
 from tide_scraper import *
 
 app = Flask(__name__, static_url_path='/static')
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 @app.route('/', methods=['GET'])
@@ -11,7 +12,11 @@ def index():
     us_regions = []
     for region in get_regions():
         us_regions.append(region.text)
-    return render_template('index.html', us_regions=us_regions)
+
+    stations = []
+    for station in get_stations():
+        stations.append(station.text)
+    return render_template('index.html', us_regions=us_regions, stations=stations)
 
 
 # Turn the light on

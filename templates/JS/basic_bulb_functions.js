@@ -30,3 +30,20 @@ $(function () {
         return false;
     });
 });
+
+$(function () {
+    $('a.dropdown-item').on('click', function (e) {
+        var name = e.currentTarget;
+        console.log(name.getAttribute("data-name"));
+    });
+});
+
+$(function () {
+    $(document).ready(function () {
+        $('.dropdown-submenu a.station').on("click", function (e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+});

@@ -10,13 +10,16 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 def index():
     # Get the region data on landing
     us_regions = []
+    local_stations = get_stations_dict()
     for region in get_regions():
         us_regions.append(region.text)
+    return render_template('index.html', us_regions=us_regions, local_stations=local_stations)
 
-    stations = []
-    for station in get_stations():
-        stations.append(station.text)
-    return render_template('index.html', us_regions=us_regions, stations=stations)
+
+@app.route('/get-stations')
+def get_stations(region):
+    local_stations = get_stations(region)
+    return render_template('index.html', local_stations=local_stations)
 
 
 # Turn the light on

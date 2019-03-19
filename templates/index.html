@@ -57,13 +57,20 @@
         <div class="row">
             <div class="col">
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Tidal Regions!
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tidal Regions
                     </button>
-                    <ul class="dropdown-menu scrollable-menu" role="menu">
+                    <ul class="dropdown-menu scrollable-menu tidal region" role="menu">
                         {% for us_region_element in us_regions %}
-                            <li><a href="#" class="dropdown-item">{{ us_region_element }}</a></li>
+                            <li class="dropdown-submenu"><a tabindex="-1" href="#" class="dropdown-item station" data-name="{{ us_region_element }}">{{ us_region_element }}<span class="caret"></span></a>
+                                <ul class="dropdown-menu scrollable-menu">
+                                    {% for key, value in local_stations.items() if key in us_region_element%}
+                                        {% for station in value %}
+                                             <li><a tabindex="-1" href="#" class="dropdown-item" data-name="{{ station }}">{{ station }}</a>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>

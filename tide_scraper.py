@@ -17,6 +17,7 @@ def get_stations_dict():
     stations_dict = dict()
     regions = soup.findAll("div", attrs={'class': 'span12 areaheader'})
     keys = []
+    temp = [] 
 
     for region in regions:
         keys.append(region.get('id'))
@@ -25,7 +26,6 @@ def get_stations_dict():
     for key in stations_dict:
         for region in regions:
             if key in region.get('id'):
-                temp = []
                 sub_regions = region.findAll("div", attrs={'class': lambda l: l and l.startswith('span4')})
                 for sub_region in sub_regions:
                     value = "%s" % sub_region.find('a').text

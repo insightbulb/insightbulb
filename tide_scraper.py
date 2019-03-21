@@ -23,9 +23,9 @@ def get_stations_dict():
     for key in keys:
         stations_dict[key] = []
     for key in stations_dict:
+        temp = list()
         for region in regions:
             if key in region.get('id'):
-                temp = []
                 sub_regions = region.findAll("div", attrs={'class': lambda l: l and l.startswith('span4')})
                 for sub_region in sub_regions:
                     value = "%s" % sub_region.find('a').text

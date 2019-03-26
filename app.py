@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from yeelight import *
 from tide_scraper import *
+import datetime
 
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -13,20 +14,23 @@ def index():
     for bulb in bulbs:
         devices.append(bulb['capabilities'].get('id'))
 
+    # Get current time
+    weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    current_day = weekday[datetime.datetime.today().weekday()]
+
     us_regions = []
     local_stations = get_stations_dict()
     for region in get_regions():
         # We don't need tide data for the great lakes
         if 'Great Lakes' not in region.text:
             us_regions.append(region.text)
-    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices)
+    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices, current_day=current_day)
 
 
 @app.route('/get-stations')
 def get_stations(region):
     local_stations = get_stations(region)
     return render_template('index.html', local_stations=local_stations)
-
 
 # Turn the light on
 @app.route('/turn-on')

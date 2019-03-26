@@ -16,15 +16,15 @@ def index():
 
     # Get current time
     weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    current_day = weekday[datetime.datetime.today().weekday()]
-
+    current_weekday = weekday[datetime.datetime.today().weekday()]
+    current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
     us_regions = []
     local_stations = get_stations_dict()
     for region in get_regions():
         # We don't need tide data for the great lakes
         if 'Great Lakes' not in region.text:
             us_regions.append(region.text)
-    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices, current_day=current_day)
+    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices, current_weekday=current_weekday, current_date=current_date)
 
 
 @app.route('/get-stations')

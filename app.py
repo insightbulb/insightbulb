@@ -18,6 +18,7 @@ def index():
     weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     current_weekday = weekday[datetime.datetime.today().weekday()]
     current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
+    
     us_regions = []
     local_stations = get_stations_dict()
     for region in get_regions():

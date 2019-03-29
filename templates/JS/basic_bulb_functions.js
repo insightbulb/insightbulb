@@ -35,10 +35,11 @@ $(function () {
 $(function () {
     $('.region').on('click', function (e) {
         var name = e.currentTarget;
-        var test_val = name.getAttribute("data-name").replace(/ .*/,'')
-        console.log(name.getAttribute("data-name"));
-        $('.current_region').html('');
-        $('.current_region').append(name.getAttribute("data-name"));
+        var test_val = name.getAttribute("data-name").replace(/ .*/,'');
+        var $region = $('.current_region');
+
+        $region.html('');
+        $region.append(name.getAttribute("data-name"));
 
         $.ajax({
             type: "POST",

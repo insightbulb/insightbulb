@@ -1,22 +1,19 @@
-from flask import Flask, render_template, request
 import httplib2
-import json
-from bs4 import BeautifulSoup, SoupStrainer
+# import json
+from bs4 import BeautifulSoup
 
 http = httplib2.Http()
 # status, response = http.request('https://tidesandcurrents.noaa.gov/stations.html')
 main = 'https://tidesandcurrents.noaa.gov/stations.html'
 status, response = http.request(main)
-# soup = BeautifulSoup(response, 'html.parser')
 
+# TODO: @dkihe
+# soup = BeautifulSoup(response, 'html.parser')
 # http.request('/basic_bulb_functions.js')
 # json.load('test_val')
-
 # if request.method == 'POST':
 #     print(request.json['test_val'])
 #     test_val = request.json['test_val']
-
-
 
 
 def get_tide_data():
@@ -26,16 +23,19 @@ def get_tide_data():
     test = soup.findAll("div", attrs={'class': 'alert'})
     return test
 
+
 def get_regions():
     soup = BeautifulSoup(response, 'html.parser')
     regions = soup.findAll("span", attrs={'class': None})
     regions.remove(regions[len(regions) - 1])
     return regions
 
+
 def get_water_level():
     soup = BeautifulSoup(response, 'html.parser')
     areas = soup.findAll("div", attrs={'class': 'span4'})
     return areas
+
 
 def get_stations_dict():
     soup = BeautifulSoup(response, 'html.parser')

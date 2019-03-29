@@ -2,19 +2,17 @@ from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
 import datetime
-from bs4 import BeautifulSoup, SoupStrainer
 import httplib2
 
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 http = httplib2.Http()
-tide_data = ''
-
 
 print(get_tide_data())
 
-@app.route('/', methods=['GET','POST'])
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
     bulbs = discover_bulbs()
     devices = []
@@ -34,24 +32,25 @@ def index():
     current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
 
     if request.method == 'POST':
-        print(request.json['test_val'])
+        print('HERE!!!', request.json['test_val'])
         test_val = request.json['test_val']
 
-        tide_data = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=' + test_val
-        print(tide_data)
-        response = http.request(tide_data)
-        soup = BeautifulSoup(response, 'html.parser')
+        station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % test_val
+        print(station_url)
+        response = http.request(station_url)
+        # soup = BeautifulSoup(response, 'html.parser')
         # test = soup.findAll("div", attrs={'class': 'span3'})
         # print(test)
 
-
-    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices, current_weekday=current_weekday, current_date=current_date)
+    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices,
+                           current_weekday=current_weekday, current_date=current_date)
 
 
 @app.route('/get-stations')
 def get_stations(region):
     local_stations = get_stations(region)
     return render_template('index.html', local_stations=local_stations)
+
 
 # Turn the light on
 @app.route('/turn-on')

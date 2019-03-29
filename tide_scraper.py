@@ -1,9 +1,24 @@
+# from flask import request
 import httplib2
+import json
 from bs4 import BeautifulSoup, SoupStrainer
 
 http = httplib2.Http()
-status, response = http.request('https://tidesandcurrents.noaa.gov/stations.html')
+# status, response = http.request('https://tidesandcurrents.noaa.gov/stations.html')
+main = 'https://tidesandcurrents.noaa.gov/stations.html'
+status, response = http.request(main)
+# soup = BeautifulSoup(response, 'html.parser')
 
+# http.request()
+
+
+
+def get_tide_data():
+    tide_data = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html'
+    status, response = http.request(tide_data)
+    soup = BeautifulSoup(response, 'html.parser')
+    test = soup.findAll("div", attrs={'class': 'alert'})
+    return test
 
 def get_regions():
     soup = BeautifulSoup(response, 'html.parser')

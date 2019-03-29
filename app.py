@@ -6,6 +6,7 @@ import datetime
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
+print(get_tide_data())
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -26,8 +27,9 @@ def index():
     current_weekday = weekday[datetime.datetime.today().weekday()]
     current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
 
-    if request.method == 'POST':
-        print(request.json['test_val'])
+    # if request.method == 'POST':
+    #     print(request.json['test_val'])
+    #     test_val = request.json['test_val']
 
     return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices, current_weekday=current_weekday, current_date=current_date)
 

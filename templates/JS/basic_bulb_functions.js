@@ -39,10 +39,11 @@ $(function () {
         console.log(name.getAttribute("data-name"));
         $('.current_region').html('');
         $('.current_region').append(name.getAttribute("data-name"));
+        
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=utf-8",
-            url: "/",
+            url: "/tide_scrapper.py",
             traditional: "true",
             data: JSON.stringify({test_val}),
             dataType: "json"

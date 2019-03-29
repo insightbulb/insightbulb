@@ -31,12 +31,27 @@ $(function () {
     });
 });
 
+// Get region location from dropdown and append it to tidal information
 $(function () {
-    $('a.dropdown-item').on('click', function (e) {
+    $('.region').on('click', function (e) {
         var name = e.currentTarget;
-        console.log(name.getAttribute("data-name"));
+        var test_val = name.getAttribute("data-name").replace(/ .*/,'');
+        var $region = $('.current_region');
+
+        $region.html('');
+        $region.append(name.getAttribute("data-name"));
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: "/",
+            traditional: "true",
+            data: JSON.stringify({test_val}),
+            dataType: "json"
+        });
     });
 });
+
 
 $(function () {
     $(document).ready(function () {

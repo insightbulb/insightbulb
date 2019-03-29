@@ -1,8 +1,27 @@
 import httplib2
-from bs4 import BeautifulSoup, SoupStrainer
+# import json
+from bs4 import BeautifulSoup
 
 http = httplib2.Http()
-status, response = http.request('https://tidesandcurrents.noaa.gov/stations.html')
+# status, response = http.request('https://tidesandcurrents.noaa.gov/stations.html')
+main = 'https://tidesandcurrents.noaa.gov/stations.html'
+status, response = http.request(main)
+
+# TODO: @dkihe
+# soup = BeautifulSoup(response, 'html.parser')
+# http.request('/basic_bulb_functions.js')
+# json.load('test_val')
+# if request.method == 'POST':
+#     print(request.json['test_val'])
+#     test_val = request.json['test_val']
+
+
+def get_tide_data():
+    tide_data = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html'
+    status, response = http.request(tide_data)
+    soup = BeautifulSoup(response, 'html.parser')
+    test = soup.findAll("div", attrs={'class': 'alert'})
+    return test
 
 
 def get_regions():
@@ -10,6 +29,12 @@ def get_regions():
     regions = soup.findAll("span", attrs={'class': None})
     regions.remove(regions[len(regions) - 1])
     return regions
+
+
+def get_water_level():
+    soup = BeautifulSoup(response, 'html.parser')
+    areas = soup.findAll("div", attrs={'class': 'span4'})
+    return areas
 
 
 def get_stations_dict():

@@ -51,7 +51,7 @@
                                 <ul class="dropdown-menu scrollable-menu">
                                     {% for key, value in local_stations.items() if key in us_region_element %}
                                         {% for station in value %}
-                                            <li><a tabindex="-1" href="#" class="dropdown-item" data-name="{{ station }}">{{ station }}</a>
+                                            <li><a tabindex="-1" href="#" class="region dropdown-item" data-name="{{ station }}">{{ station }}</a>
                                         {% endfor %}
                                     {% endfor %}
                                 </ul>
@@ -67,6 +67,9 @@
             </div>
             <div class="col">
                 <h5>Tides</h5>
+                <div>{{ current_weekday }} {{ current_date }}</div>
+                <div>{{ test }}</div>
+                <div class="current_region"></div>
             </div>
         </div>
     </div>

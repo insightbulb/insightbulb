@@ -2,9 +2,15 @@ from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
 import datetime
+from bs4 import BeautifulSoup, SoupStrainer
+import httplib2
 
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+http = httplib2.Http()
+tide_data = ''
+
 
 print(get_tide_data())
 
@@ -27,9 +33,17 @@ def index():
     current_weekday = weekday[datetime.datetime.today().weekday()]
     current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
 
-    # if request.method == 'POST':
-    #     print(request.json['test_val'])
-    #     test_val = request.json['test_val']
+    if request.method == 'POST':
+        print(request.json['test_val'])
+        test_val = request.json['test_val']
+
+        tide_data = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=' + test_val
+        print(tide_data)
+        response = http.request(tide_data)
+        soup = BeautifulSoup(response, 'html.parser')
+        # test = soup.findAll("div", attrs={'class': 'span3'})
+        # print(test)
+
 
     return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices, current_weekday=current_weekday, current_date=current_date)
 

@@ -1,4 +1,4 @@
-# from flask import request
+from flask import Flask, render_template, request
 import httplib2
 import json
 from bs4 import BeautifulSoup, SoupStrainer
@@ -9,7 +9,13 @@ main = 'https://tidesandcurrents.noaa.gov/stations.html'
 status, response = http.request(main)
 # soup = BeautifulSoup(response, 'html.parser')
 
-# http.request()
+# http.request('/basic_bulb_functions.js')
+# json.load('test_val')
+
+# if request.method == 'POST':
+#     print(request.json['test_val'])
+#     test_val = request.json['test_val']
+
 
 
 

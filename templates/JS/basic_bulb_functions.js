@@ -35,15 +35,15 @@ $(function () {
 $(function () {
     $('.region').on('click', function (e) {
         var name = e.currentTarget;
-        var test_val = name.getAttribute("data-name")
+        var test_val = name.getAttribute("data-name").replace(/ .*/,'')
         console.log(name.getAttribute("data-name"));
         $('.current_region').html('');
         $('.current_region').append(name.getAttribute("data-name"));
-        
+
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=utf-8",
-            url: "/tide_scrapper.py",
+            url: "/",
             traditional: "true",
             data: JSON.stringify({test_val}),
             dataType: "json"

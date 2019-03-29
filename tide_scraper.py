@@ -11,6 +11,10 @@ def get_regions():
     regions.remove(regions[len(regions) - 1])
     return regions
 
+def get_water_level():
+    soup = BeautifulSoup(response, 'html.parser')
+    areas = soup.findAll("div", attrs={'class': 'span4'})
+    return areas
 
 def get_stations_dict():
     soup = BeautifulSoup(response, 'html.parser')

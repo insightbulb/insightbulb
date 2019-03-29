@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
 import datetime
@@ -7,24 +7,28 @@ app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET','POST'])
 def index():
     bulbs = discover_bulbs()
     devices = []
     for bulb in bulbs:
         devices.append(bulb['capabilities'].get('id'))
 
-    # Get current time
-    weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    current_weekday = weekday[datetime.datetime.today().weekday()]
-    current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
-    
     us_regions = []
     local_stations = get_stations_dict()
     for region in get_regions():
         # We don't need tide data for the great lakes
         if 'Great Lakes' not in region.text:
             us_regions.append(region.text)
+
+    # Get current time
+    weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    current_weekday = weekday[datetime.datetime.today().weekday()]
+    current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
+
+    if request.method == 'POST':
+        print(request.json['test_val'])
+
     return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices, current_weekday=current_weekday, current_date=current_date)
 
 

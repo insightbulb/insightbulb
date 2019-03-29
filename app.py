@@ -1,12 +1,18 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
+import datetime
+import httplib2
 
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
+http = httplib2.Http()
 
-@app.route('/', methods=['GET'])
+print(get_tide_data())
+
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
     bulbs = discover_bulbs()
     devices = []
@@ -19,7 +25,25 @@ def index():
         # We don't need tide data for the great lakes
         if 'Great Lakes' not in region.text:
             us_regions.append(region.text)
-    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices)
+
+    # Get current time
+    weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    current_weekday = weekday[datetime.datetime.today().weekday()]
+    current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
+
+    if request.method == 'POST':
+        print('HERE!!!', request.json['test_val'])
+        test_val = request.json['test_val']
+
+        station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % test_val
+        print(station_url)
+        response = http.request(station_url)
+        # soup = BeautifulSoup(response, 'html.parser')
+        # test = soup.findAll("div", attrs={'class': 'span3'})
+        # print(test)
+
+    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices,
+                           current_weekday=current_weekday, current_date=current_date)
 
 
 @app.route('/get-stations')

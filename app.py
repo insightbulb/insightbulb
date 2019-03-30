@@ -3,14 +3,13 @@ from yeelight import *
 from tide_scraper import *
 import datetime
 import httplib2
+import json
+import re
 
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 http = httplib2.Http()
-
-print(get_tide_data())
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -30,14 +29,18 @@ def index():
     weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     current_weekday = weekday[datetime.datetime.today().weekday()]
     current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
-
+    
     if request.method == 'POST':
-        print('HERE!!!', request.json['test_val'])
+        # print('HERE!!!', request.json['test_val'])
         test_val = request.json['test_val']
 
         station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % test_val
-        print(station_url)
-        response = http.request(station_url)
+        times = get_tide_data(station_url)
+        simple_flow(times)
+
+    # print(station_url)
+    # response = http.request(station_url)
+
         # soup = BeautifulSoup(response, 'html.parser')
         # test = soup.findAll("div", attrs={'class': 'span3'})
         # print(test)
@@ -77,11 +80,16 @@ def turn_off():
 
 
 # This is a simple example of a flow event
-@app.route('/flow')
-def simple_flow():
+def simple_flow(times):
+    split_times = list()
+
+    for time in times:
+        high_low = re.compile('[AM/PM]').split(time)
+        split_times.append(high_low)
+
     bulbs = discover_bulbs()
     if len(bulbs) is 0:
-        return render_template('index.html')
+        return False
 
     my_bulb = Bulb(bulbs[0].get("ip"))
     transitions = [
@@ -98,7 +106,7 @@ def simple_flow():
     )
 
     my_bulb.start_flow(flow1)
-    return render_template('index.html')
+    # return split_times
 
 
 if __name__ == '__main__':

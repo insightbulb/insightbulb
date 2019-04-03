@@ -63,6 +63,7 @@ $(function () {
     });
 });
 
+// TODO: Probably use ajax requests to get the data for the graphs
 // A dummy template for how the tide data will be graphed
 $(function () {
     $(document).ready(function () {

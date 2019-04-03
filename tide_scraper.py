@@ -1,19 +1,9 @@
 import httplib2
-import json
 from bs4 import BeautifulSoup
 
 http = httplib2.Http()
-# status, response = http.request('https://tidesandcurrents.noaa.gov/stations.html')
 main = 'https://tidesandcurrents.noaa.gov/stations.html'
 status, response = http.request(main)
-
-# TODO: @dkihe
-# soup = BeautifulSoup(response, 'html.parser')
-# http.request('/templates/JS/basic_bulb_functions.js')
-# json.load('test_val')
-# if request.method == 'POST':
-#     print(request.json['test_val'])
-#     test_val = request.json['test_val']
 
 
 def get_tide_data(value):
@@ -21,8 +11,7 @@ def get_tide_data(value):
     tide_http = httplib2.Http()
     tide_data = value
     tide_status, tide_response = tide_http.request(tide_data)
-    status, response = http.request(tide_data)
-    soup = BeautifulSoup(response, 'html.parser')
+    soup = BeautifulSoup(tide_response, 'html.parser')
     table = soup.find("table", attrs={'class': 'table-condensed'}).findAll("tr", attrs={'class': None})
     for tag in table:
         times.append(tag.text)  

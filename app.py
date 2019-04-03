@@ -3,13 +3,12 @@ from yeelight import *
 from tide_scraper import *
 import datetime
 import httplib2
-import json
 import re
 
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
 http = httplib2.Http()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -21,6 +20,7 @@ def index():
     us_regions = []
     local_stations = get_stations_dict()
     for region in get_regions():
+        # TODO: Iterate through an array of all the locations we want to skip
         # We don't need tide data for the great lakes
         if 'Great Lakes' not in region.text:
             us_regions.append(region.text)
@@ -29,23 +29,16 @@ def index():
     weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     current_weekday = weekday[datetime.datetime.today().weekday()]
     current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
-    
-    if request.method == 'POST':
-        # print('HERE!!!', request.json['test_val'])
-        test_val = request.json['test_val']
 
+    # A tidal station was selected
+    if request.method == 'POST':
+        test_val = request.json['test_val']
         station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % test_val
         times = get_tide_data(station_url)
         simple_flow(times)
 
-    # print(station_url)
-    # response = http.request(station_url)
-
-        # soup = BeautifulSoup(response, 'html.parser')
-        # test = soup.findAll("div", attrs={'class': 'span3'})
-        # print(test)
-
-    return render_template('index.html', us_regions=us_regions, local_stations=local_stations, devices=devices,
+    return render_template('index.html', us_regions=us_regions,
+                           local_stations=local_stations, devices=devices,
                            current_weekday=current_weekday, current_date=current_date)
 
 
@@ -79,12 +72,15 @@ def turn_off():
     return render_template('index.html')
 
 
-# This is a simple example of a flow event
+# TODO: Add delayed thread for
+#  tidal highs and lows
 def simple_flow(times):
     split_times = list()
 
+    # split_times, contains elements in the form:
+    # e.g., ['2:51 ', 'AM', 'high 1.62 ft.']
     for time in times:
-        high_low = re.compile('[AM/PM]').split(time)
+        high_low = re.split('([AP]M)', time)
         split_times.append(high_low)
 
     bulbs = discover_bulbs()
@@ -106,7 +102,6 @@ def simple_flow(times):
     )
 
     my_bulb.start_flow(flow1)
-    # return split_times
 
 
 if __name__ == '__main__':

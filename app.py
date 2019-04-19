@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from yeelight import *
 from tide_scraper import *
-import datetime
+from datetime import datetime
 import time
 import httplib2
 import re
@@ -9,6 +9,7 @@ import re
 app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 http = httplib2.Http()
+current_times = list()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -28,19 +29,31 @@ def index():
 
     # Get current time
     weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    current_weekday = weekday[datetime.datetime.today().weekday()]
-    current_date = str(datetime.datetime.today().month) + '/' + str(datetime.datetime.today().day)
+    current_weekday = weekday[datetime.today().weekday()]
+    current_date = str(datetime.today().month) + '/' + str(datetime.today().day)
 
     # A tidal station was selected
+    tide_times = []
     if request.method == 'POST':
         test_val = request.json['test_val']
         station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % test_val
         times = get_tide_data(station_url)
-        simple_flow(times)
+        current_times.clear()
+        extrema = simple_flow(times)
+        for extreme in extrema:
+            current_times.append(extreme)
+        update_tide_times()
 
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
-                           current_weekday=current_weekday, current_date=current_date)
+                           current_weekday=current_weekday, current_date=current_date,
+                           tide_times=tide_times)
+
+
+@app.route('/show-tide-extrema')
+def update_tide_times():
+    print("HERE!!", current_times)
+    return render_template('index.html', tide_times=current_times)
 
 
 @app.route('/get-stations')
@@ -80,12 +93,12 @@ def simple_flow(times):
 
     # split_times, contains elements in the form:
     # e.g., ['2:51 ', 'AM', 'high 1.62 ft.']
-    for time in times:
-        high_low = re.split('([AP]M)', time)
+    for tide in times:
+        high_low = re.split('([AP]M)', tide)
         split_times.append(high_low)
 
     # Get current time in seconds
-    current_time = datetime.datetime.today()
+    current_time = datetime.today()
     tide_times = split_times_to_datetimes(split_times)
 
     # Get data points (prev tide time, current time, next tide time)
@@ -98,11 +111,9 @@ def simple_flow(times):
     light_intensity = get_light_intensity(test)
     print(light_intensity)
 
-
-
     bulbs = discover_bulbs()
     if len(bulbs) is 0:
-        return False
+        return split_times
 
     my_bulb = Bulb(bulbs[0].get("ip"))
     transitions = [
@@ -120,30 +131,34 @@ def simple_flow(times):
 
     my_bulb.start_flow(flow1)
 
+    return split_times
+
+
 def split_times_to_datetimes(split_times):
     results = []
-    current_time = datetime.datetime.today()
-    for time in split_times:
-        test_time = str(current_time.year) + " " + str(current_time.month)+ " " + str(current_time.day)+ " " + str(time[0]) + str(time[1])
-        dateobj = datetime.datetime.strptime(test_time, '%Y %m %d %I:%M %p')
-        results.append([dateobj, time[2].split(' ')[0]])
+    current_time = datetime.today()
+    for tide in split_times:
+        test_time = str(current_time.year) + " " + str(current_time.month) + " " + str(current_time.day) + " " + str(
+            tide[0]) + str(tide[1])
+        date_object = datetime.strptime(test_time, '%Y %m %d %I:%M %p')
+        results.append([date_object, tide[2].split(' ')[0]])
 
     return results
+
 
 def get_data_points(current_time, tide_times):
     results = []
-    prev_time = None
-    next_time = None
     last_item = None
-    #Compare current time with tide times
-    for time in tide_times:
-        if time[0] < current_time:
-            last_item = time[0]
+    # Compare current time with tide times
+    for tide in tide_times:
+        if tide[0] < current_time:
+            last_item = tide[0]
         else:
             prev_time = last_item
-            next_time = time[0]
-            results.extend(prev_time, current_time, next_time)
+            next_time = tide[0]
+            results.extend([prev_time, current_time, next_time])
     return results
+
 
 def get_light_intensity(data_points):
     # Get fraction of tide
@@ -156,29 +171,27 @@ def get_light_intensity(data_points):
     current_time_seconds = float(time.mktime(current_time.timetuple()))
     next_time_seconds = float(time.mktime(next_time.timetuple()))
 
-    numerator = (next_time_seconds - prev_time_seconds)/10
+    numerator = (next_time_seconds - prev_time_seconds) / 10
     denomenator = current_time_seconds - prev_time_seconds
-    light_intensity = (numerator/denomenator) * 100
+    light_intensity = (numerator / denomenator) * 100
 
     return light_intensity
 
-def fake_times():
 
+def fake_times():
     conversion_format = '%b %d %Y %I:%M%p'
 
     prev_date_time = 'Apr 19 2019 3:32PM'
-    prev_date_obj = datetime.datetime.strptime(prev_date_time, conversion_format)
+    prev_date_obj = datetime.strptime(prev_date_time, conversion_format)
 
     current_date_time = 'Apr 19 2019 5:14PM'
-    current_date_obj = datetime.datetime.strptime(current_date_time, conversion_format)
+    current_date_obj = datetime.strptime(current_date_time, conversion_format)
 
     next_date_time = 'Apr 19 2019 10:05PM'
-    next_date_obj = datetime.datetime.strptime(next_date_time, conversion_format)
+    next_date_obj = datetime.strptime(next_date_time, conversion_format)
 
-    fake_times = [prev_date_obj, current_date_obj, next_date_obj]
-    return fake_times
-
-
+    test_times = [prev_date_obj, current_date_obj, next_date_obj]
+    return test_times
 
 
 if __name__ == '__main__':

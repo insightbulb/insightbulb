@@ -31,6 +31,16 @@ $(function () {
     });
 });
 
+// Tide extrema
+$(function () {
+    $('a#show-times').on('click', function () {
+        $.getJSON('/show-tide-extrema',
+            function (data) {
+                //do nothing
+            });
+        return false;
+    });
+});
 // Get region location from dropdown and append it to tidal information
 $(function () {
     $('.region').on('click', function (e) {
@@ -72,10 +82,10 @@ $(function () {
         var myLineChart = new Chart(ctxL, {
             type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: ["12:00 AM", "6:00 AM", "12:00 PM", "6:00 PM"],
                 datasets: [{
-                    label: "My First dataset",
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    label: "Predicted",
+                    data: [0.95, 1.25, 1.05, 0.74],
                     backgroundColor: [
                         'rgba(105, 0, 132, .2)',
                     ],
@@ -85,8 +95,8 @@ $(function () {
                     borderWidth: 2
                 },
                     {
-                        label: "My Second dataset",
-                        data: [28, 48, 40, 19, 86, 27, 90],
+                        label: "Actual",
+                        data: [0.87, 1.15, 1.08, 0.71],
                         backgroundColor: [
                             'rgba(0, 137, 132, .2)',
                         ],

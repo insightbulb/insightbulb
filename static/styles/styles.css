@@ -16,7 +16,14 @@
 }
 
 #data-container {
-    margin-top: 200px;
+    margin-top: 64px;
+}
+
+#tide-table {
+    max-width: 300px;
+    margin-top: 32px;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 body {

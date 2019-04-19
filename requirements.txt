@@ -14,11 +14,10 @@ future==0.17.1
 httplib2==0.12.1
 idna==2.8
 itsdangerous==1.1.0
-Jinja2==2.10
+Jinja2==2.10.1
 lxml==4.3.2
 MarkupSafe==1.1.1
 numpy==1.16.2
-pandas==0.24.1
 parse==1.11.1
 pyee==5.0.0
 pyppeteer==0.0.25
@@ -35,5 +34,4 @@ urllib3==1.24.1
 w3lib==1.20.0
 websockets==7.0
 Werkzeug==0.14.1
-yahoo-fin==0.8
 yeelight==0.4.3

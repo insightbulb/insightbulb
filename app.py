@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
 import datetime
+import time
 import httplib2
 import re
 
@@ -83,6 +84,22 @@ def simple_flow(times):
         high_low = re.split('([AP]M)', time)
         split_times.append(high_low)
 
+    # Get current time in seconds
+    current_time = datetime.datetime.today()
+    tide_times = split_times_to_datetimes(split_times)
+
+    # Get data points (prev tide time, current time, next tide time)
+    # Data points are converted to datatime objects
+    data_points = get_data_points(current_time, tide_times)
+
+    # Get bulb intensity as a percent.  Bulb gets brighter as it gets closer to next tide time.
+    # Use fake times as a test.  Replace with data_points. 
+    test = fake_times()
+    light_intensity = get_light_intensity(test)
+    print(light_intensity)
+
+
+
     bulbs = discover_bulbs()
     if len(bulbs) is 0:
         return False
@@ -102,6 +119,66 @@ def simple_flow(times):
     )
 
     my_bulb.start_flow(flow1)
+
+def split_times_to_datetimes(split_times):
+    results = []
+    current_time = datetime.datetime.today()
+    for time in split_times:
+        test_time = str(current_time.year) + " " + str(current_time.month)+ " " + str(current_time.day)+ " " + str(time[0]) + str(time[1])
+        dateobj = datetime.datetime.strptime(test_time, '%Y %m %d %I:%M %p')
+        results.append([dateobj, time[2].split(' ')[0]])
+
+    return results
+
+def get_data_points(current_time, tide_times):
+    results = []
+    prev_time = None
+    next_time = None
+    last_item = None
+    #Compare current time with tide times
+    for time in tide_times:
+        if time[0] < current_time:
+            last_item = time[0]
+        else:
+            prev_time = last_item
+            next_time = time[0]
+            results.extend(prev_time, current_time, next_time)
+    return results
+
+def get_light_intensity(data_points):
+    # Get fraction of tide
+    # light_intensity = time.mktime(data_points[0][0].timetuple())
+    prev_time = data_points[0]
+    current_time = data_points[1]
+    next_time = data_points[2]
+
+    prev_time_seconds = float(time.mktime(prev_time.timetuple()))
+    current_time_seconds = float(time.mktime(current_time.timetuple()))
+    next_time_seconds = float(time.mktime(next_time.timetuple()))
+
+    numerator = (next_time_seconds - prev_time_seconds)/10
+    denomenator = current_time_seconds - prev_time_seconds
+    light_intensity = (numerator/denomenator) * 100
+
+    return light_intensity
+
+def fake_times():
+
+    conversion_format = '%b %d %Y %I:%M%p'
+
+    prev_date_time = 'Apr 19 2019 3:32PM'
+    prev_date_obj = datetime.datetime.strptime(prev_date_time, conversion_format)
+
+    current_date_time = 'Apr 19 2019 5:14PM'
+    current_date_obj = datetime.datetime.strptime(current_date_time, conversion_format)
+
+    next_date_time = 'Apr 19 2019 10:05PM'
+    next_date_obj = datetime.datetime.strptime(next_date_time, conversion_format)
+
+    fake_times = [prev_date_obj, current_date_obj, next_date_obj]
+    return fake_times
+
+
 
 
 if __name__ == '__main__':

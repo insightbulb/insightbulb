@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/styles/dropdown.css">
+    <link rel="stylesheet" href="/static/styles/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.5/js/mdb.min.js"></script>
@@ -42,7 +42,7 @@
         </div>
         <br/>
         <div class="row">
-            <div class="col">
+            <div id="station-column" class="col">
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tidal Regions</button>
                     <ul class="dropdown-menu" role="menu">
@@ -61,15 +61,20 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top: 100px;" class="row">
-            <div class="col">
-                <canvas id="lineChart"></canvas>
-            </div>
-            <div class="col">
-                <h5>Tides</h5>
-                <div>{{ current_weekday }} {{ current_date }}</div>
-                <div>{{ test }}</div>
-                <div class="current_region"></div>
+        <div id="data-container" class="container">
+            <div class="row">
+                <div class="col">
+                    <canvas id="lineChart"></canvas>
+                </div>
+                <div class="col">
+                    <div class="card bg-light mb-3">
+                        <div class="card-header">Header</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ current_weekday }} {{ current_date }}</h5>
+                            <div class="current_region"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

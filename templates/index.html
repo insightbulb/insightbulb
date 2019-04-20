@@ -88,13 +88,22 @@
                         </div>
                     </div>
                     <div id="station-success" class="alert alert-primary" role="alert">
-                        Ready to refresh!
+                        Great success!
                     </div>
                 </div>
                 <div class="col"></div>
             </div>
             <div class="row data-row">
                 <div id="tide-graph" class="col graph-container">
+                    {% if not tide_times %}
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">Danger Will Robinson!</h4>
+                            <p>Aww shucks, there wasn't any data here.  I guess the world is truly an unjust
+                            place.  A bleak wasteland of false hope...</p>
+                            <hr>
+                            <p class="mb-0">Oh well, moving on.</p>
+                        </div>
+                    {% endif %}
                     <canvas id="lineChart"></canvas>
                 </div>
                 <div class="col">
@@ -139,8 +148,8 @@
                     see live data, and automatically sync your bulb to notify you of tide changes!
                     <br>
                     <br>
-                    To get started: Select a station. Once you see your bulb notify you of the connection,
-                    click 'Refresh data' to see the live data. Your bulbs now set up for ambient notifications!
+                    To get started: Select a station. Your bulb will notify you that it's been connected. You'll
+                    see the data appear on the screen, and your good to go!
                     <br>
                     <br>
                     Hope this was insightful!

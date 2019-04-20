@@ -82,7 +82,8 @@ $(function () {
         setTimeout(function () {
             $('#station-loader').hide();
             $('#station-success').show();
-        }, 5000);
+            window.location.reload();
+        }, 8000);
     });
 });
 

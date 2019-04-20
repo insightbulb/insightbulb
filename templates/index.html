@@ -23,6 +23,10 @@
                 <div class="col">
                     <h1 class="header">Insightbulb - Tides</h1>
                     <h2 class="sub">An ambient tide notification system for Yeelight bulbs</h2>
+                    <button id="help-modal" type="button" class="btn btn-outline-info" data-toggle="modal"
+                            data-target="#exampleModalCenter">
+                        Help
+                    </button>
                 </div>
             </div>
             <div style="margin-top: 32px;" class="row">
@@ -33,7 +37,8 @@
                         <div class="btn-group" role="group">
                             <div class="dropdown">
                                 <button style="border-radius: 0 5px 5px 0;" class="btn btn-outline-dark dropdown-toggle"
-                                        type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                        aria-haspopup="true"
                                         aria-expanded="false">Devices
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
@@ -59,7 +64,7 @@
                                         {% for key, value in local_stations.items() if key in us_region_element %}
                                             {% for station in value %}
                                                 <li><a tabindex="-1" href="#" class="region dropdown-item"
-                                                        data-name="{{ station }}">{{ station }}</a>
+                                                       data-name="{{ station }}">{{ station }}</a>
                                             {% endfor %}
                                         {% endfor %}
                                     </ul>
@@ -69,29 +74,49 @@
                     </div>
                 </div>
                 <div class="col">
-                    <a href="#" id="show-times" class="btn btn-outline-secondary">Update times</a>
+                    <a href="#" id="show-times" class="btn btn-outline-secondary">Refresh data</a>
                 </div>
             </div>
         </div>
         <div id="data-container" class="container text-center">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                        <div id="station-loader" class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="station-success" class="alert alert-primary" role="alert">
+                        Ready to refresh!
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
             <div class="row data-row">
-                <div class="col graph-container">
+                <div id="tide-graph" class="col graph-container">
                     <canvas id="lineChart"></canvas>
                 </div>
                 <div class="col">
                     <div class="card ">
                         <div class="card-body">
-                            <div class=datetime>{{ current_weekday }} {{ current_date }}</div>
-                            <div class="current_region"></div>
+                            {% if station_name %}
+                                <div class=datetime>{{ current_weekday }} {{ current_date }}</div>
+                            {% endif %}
+                            <div>
+                                {% for name in station_name %}
+                                    {{ name }}
+                                {% endfor %}
+                            </div>
                             <div>{{ tide_data }}</div>
                             <table id="tide-table" class="table">
-                              <tbody>
+                                <tbody>
                                 {% for time in tide_times %}
-                                  <tr>
-                                    <td class="tide-extrema-data">{{ time }}</td>
-                                  </tr>
+                                    <tr>
+                                        <td class="tide-extrema-data">{{ time }}</td>
+                                    </tr>
                                 {% endfor %}
-                              </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -99,10 +124,37 @@
             </div>
         </div>
     </div>
+    <div id="welcome-modal" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Welcome to Insightbulb!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    This application connects to your Yeelight light bulb. You can select a tide station to
+                    see live data, and automatically sync your bulb to notify you of tide changes!
+                    <br>
+                    <br>
+                    To get started: Select a station. Once you see your bulb notify you of the connection,
+                    click 'Refresh data' to see the live data. Your bulbs now set up for ambient notifications!
+                    <br>
+                    <br>
+                    Hope this was insightful!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Okay!</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% block javascript %}
     <script type="text/javascript">
-        {% include "JS/basic_bulb_functions.js" %}
+        {% include "JS/frontend.js" %}
     </script>
 {% endblock %}
 </body>

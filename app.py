@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
 from datetime import datetime
-import time
+from tide_data import split_times_to_datetimes, get_data_points
+
 import httplib2
 import re
 
@@ -10,6 +11,7 @@ app = Flask(__name__, static_url_path='/static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 http = httplib2.Http()
 current_times = list()
+station_name = []
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -34,23 +36,25 @@ def index():
 
     # A tidal station was selected
     if request.method == 'POST':
-        test_val = request.json['test_val']
-        station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % test_val
+        station_data = request.json['station_data']
+        station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % station_data[0]
         times = get_tide_data(station_url)
         current_times.clear()
         extrema = simple_flow(times)
+        station_name.clear()
+        station_name.append(station_data[1])
+        print("HERE!!", station_data)
         for extreme in extrema:
             current_times.append(extreme)
 
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
                            current_weekday=current_weekday, current_date=current_date,
-                           tide_times=current_times)
+                           tide_times=current_times, station_name=station_name)
 
 
 @app.route('/show-tide-extrema')
 def update_tide_times():
-    print("HERE!!", current_times)
     return render_template('index.html', tide_times=current_times)
 
 
@@ -103,12 +107,6 @@ def simple_flow(times):
     # Data points are converted to datatime objects
     data_points = get_data_points(current_time, tide_times)
 
-    # Get bulb intensity as a percent.  Bulb gets brighter as it gets closer to next tide time.
-    # Use fake times as a test.  Replace with data_points. 
-    test = fake_times()
-    light_intensity = get_light_intensity(test)
-    print(light_intensity)
-
     bulbs = discover_bulbs()
     if len(bulbs) is 0:
         return split_times
@@ -130,66 +128,6 @@ def simple_flow(times):
     my_bulb.start_flow(flow1)
 
     return split_times
-
-
-def split_times_to_datetimes(split_times):
-    results = []
-    current_time = datetime.today()
-    for tide in split_times:
-        test_time = str(current_time.year) + " " + str(current_time.month) + " " + str(current_time.day) + " " + str(
-            tide[0]) + str(tide[1])
-        date_object = datetime.strptime(test_time, '%Y %m %d %I:%M %p')
-        results.append([date_object, tide[2].split(' ')[0]])
-
-    return results
-
-
-def get_data_points(current_time, tide_times):
-    results = []
-    last_item = None
-    # Compare current time with tide times
-    for tide in tide_times:
-        if tide[0] < current_time:
-            last_item = tide[0]
-        else:
-            prev_time = last_item
-            next_time = tide[0]
-            results.extend([prev_time, current_time, next_time])
-    return results
-
-
-def get_light_intensity(data_points):
-    # Get fraction of tide
-    # light_intensity = time.mktime(data_points[0][0].timetuple())
-    prev_time = data_points[0]
-    current_time = data_points[1]
-    next_time = data_points[2]
-
-    prev_time_seconds = float(time.mktime(prev_time.timetuple()))
-    current_time_seconds = float(time.mktime(current_time.timetuple()))
-    next_time_seconds = float(time.mktime(next_time.timetuple()))
-
-    numerator = (next_time_seconds - prev_time_seconds) / 10
-    denomenator = current_time_seconds - prev_time_seconds
-    light_intensity = (numerator / denomenator) * 100
-
-    return light_intensity
-
-
-def fake_times():
-    conversion_format = '%b %d %Y %I:%M%p'
-
-    prev_date_time = 'Apr 19 2019 3:32PM'
-    prev_date_obj = datetime.strptime(prev_date_time, conversion_format)
-
-    current_date_time = 'Apr 19 2019 5:14PM'
-    current_date_obj = datetime.strptime(current_date_time, conversion_format)
-
-    next_date_time = 'Apr 19 2019 10:05PM'
-    next_date_obj = datetime.strptime(next_date_time, conversion_format)
-
-    test_times = [prev_date_obj, current_date_obj, next_date_obj]
-    return test_times
 
 
 if __name__ == '__main__':

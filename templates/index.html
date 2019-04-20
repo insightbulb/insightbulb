@@ -85,28 +85,13 @@
                             <div class="current_region"></div>
                             <div>{{ tide_data }}</div>
                             <table id="tide-table" class="table">
-                                <tbody>
-                                <tr>
-                                    <th scope="row">High</th>
-                                    <td>4:08 AM</td>
-                                    <td>1.25 ft</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Low</th>
-                                    <td>10:05 AM</td>
-                                    <td>-0.27 ft</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">High</th>
-                                    <td>4:51 PM</td>
-                                    <td>1.92 ft</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Low</th>
-                                    <td>11:15 PM</td>
-                                    <td>0.04 ft</td>
-                                </tr>
-                                </tbody>
+                              <tbody>
+                                {% for time in tide_times %}
+                                  <tr>
+                                    <td class="tide-extrema-data">{{ time }}</td>
+                                  </tr>
+                                {% endfor %}
+                              </tbody>
                             </table>
                         </div>
                     </div>

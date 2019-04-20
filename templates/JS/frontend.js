@@ -1,3 +1,16 @@
+$(function () {
+    $('#help-modal').on('click', function () {
+        $('#welcome-modal').modal('show');
+    });
+});
+
+
+$(function () {
+    $('#myModal').on('click', function () {
+        $('#welcome-modal').hide();
+    });
+});
+
 // Turn on
 $(function () {
     $('a#turn-on').on('click', function () {
@@ -46,20 +59,30 @@ $(function () {
 $(function () {
     $('.region').on('click', function (e) {
         var name = e.currentTarget;
-        var test_val = name.getAttribute("data-name").replace(/ .*/,'');
+
+        var station_data = [];
+        station_data.push(name.getAttribute("data-name").replace(/ .*/, ''));
+        station_data.push(name.getAttribute("data-name"));
+
         var $region = $('.current_region');
 
         $region.html('');
         $region.append(name.getAttribute("data-name"));
+        $(".graph-title").html(name.getAttribute("data-name"));
 
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=utf-8",
             url: "/",
             traditional: "true",
-            data: JSON.stringify({test_val}),
+            data: JSON.stringify({station_data: station_data}),
             dataType: "json"
         });
+        $('#station-loader').show();
+        setTimeout(function () {
+            $('#station-loader').hide();
+            $('#station-success').show();
+        }, 5000);
     });
 });
 
@@ -86,7 +109,7 @@ $(function () {
 
         // This loop is a little strange as the data we pull from the html is a string
         // What we do then is map all digits from the string into an array
-        // The n and n-1 indices contain the sig-figs of the height, so the final
+        // The n and n-1 indices contain the sig-figs of the height, so the third
         // line of the loop gives our value after a division of 100
         var count = 0;
         var height_points = [];

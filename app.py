@@ -33,7 +33,6 @@ def index():
     current_date = str(datetime.today().month) + '/' + str(datetime.today().day)
 
     # A tidal station was selected
-    tide_times = []
     if request.method == 'POST':
         test_val = request.json['test_val']
         station_url = 'https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=%s' % test_val
@@ -42,12 +41,11 @@ def index():
         extrema = simple_flow(times)
         for extreme in extrema:
             current_times.append(extreme)
-        update_tide_times()
 
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
                            current_weekday=current_weekday, current_date=current_date,
-                           tide_times=tide_times)
+                           tide_times=current_times)
 
 
 @app.route('/show-tide-extrema')

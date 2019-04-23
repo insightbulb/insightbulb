@@ -30,7 +30,7 @@ body {
 
 #tide-table {
     max-width: 300px;
-    margin-top: 32px;
+    margin-top: 10px;
     margin-left:auto;
     margin-right:auto;
 }
@@ -57,7 +57,7 @@ body {
 
 .header {
     font-size: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 5rem;
     letter-spacing: .125rem;
 }
 

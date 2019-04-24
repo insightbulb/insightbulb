@@ -55,6 +55,33 @@ $(function () {
         return false;
     });
 });
+
+// Tide High/Low
+$(function(){
+    let i = 0
+    $('.tide-extrema-data').each(function(index) {
+        // i++;
+        // $(this).attr("id", "tidedata" + i)
+            // $('td').$('i').addClass('fas fa-chevron-circle-up');
+        if ($(this).text().indexOf('high') >= 0) {
+            $(this).children().addClass('fas fa-chevron-circle-up');
+        }
+        else {
+            $(this).children().addClass('fas fa-chevron-circle-down');
+        }
+    })
+})
+
+// $(function() {
+//     // if ($(".tide-extrema-data:contains('high')")){
+//     //     console.log('none')
+//     // }
+
+//     if ($('.tide-extrema-data').text().indexOf("high") >= 0) {
+//         $('td').$('i').addClass('fas fa-chevron-circle-up');
+//     }
+// })
+
 // Get region location from dropdown and append it to tidal information
 $(function () {
     $('.region').on('click', function (e) {

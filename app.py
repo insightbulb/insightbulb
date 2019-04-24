@@ -3,8 +3,9 @@ from yeelight import *
 from tide_scraper import *
 from tide_data import split_times_to_datetimes, get_data_points
 
-import threading
+
 from datetime import datetime
+import threading
 
 import httplib2
 import re
@@ -126,14 +127,6 @@ def tidal_flow(times):
     if len(bulbs) is 0:
         return displayable_tides
 
-    # Get current time in seconds, data points (prev tide time, current time, next tide time)
-    # Data points are converted to datetime objects
-    # TODO: Implement the 'brightness-to-tide' feature with a thread that calls a
-    #  function that runs a loop for as long as the known tidal change
-    current_time = datetime.today()
-    tide_times = split_times_to_datetimes(split_times)
-    data_points = get_data_points(current_time, tide_times)
-
     # Notify when a station is selected
     my_bulb = Bulb(bulbs[0].get("ip"))
     station_select_pulse = [
@@ -153,8 +146,16 @@ def tidal_flow(times):
         count=2,
         action=Flow.actions.recover,
         transitions=delayed_transitions)
-    tide_alert = (data_points[2] - current_time).total_seconds()
-    threading.Timer(tide_alert, my_bulb.start_flow(delayed_alert_flow)).start()
+
+    # Get current time in seconds, data points (prev tide time, current time, next tide time)
+    # Data points are converted to datetime objects
+    # TODO: Implement the 'brightness-to-tide' feature with a thread that calls a
+    #  function that runs a loop for as long as the known tidal change
+    now = datetime.today()
+    tide_times = split_times_to_datetimes(split_times)
+    data_points = get_data_points(now, tide_times)
+    delay = (data_points.pop() - now).total_seconds()
+    threading.Timer(delay, lambda: my_bulb.start_flow(delayed_alert_flow)).start()
 
     return displayable_tides
 

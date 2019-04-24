@@ -58,12 +58,12 @@ $(function () {
 
 // Display arrows next to tide data
 $(function(){
-    $('.arrows').each(function(index) {
+    $('.tide-extrema-data').each(function(index) {
         if ($(this).text().indexOf('high') >= 0) {
-            $(this).children().addClass('fas fa-chevron-circle-up');
+            $(this).next().children().addClass('fas fa-chevron-circle-up');
         }
         else {
-            $(this).children().addClass('fas fa-chevron-circle-down');
+            $(this).next().children().addClass('fas fa-chevron-circle-down');
         }
     })
 })

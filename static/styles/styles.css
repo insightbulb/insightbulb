@@ -73,3 +73,7 @@ body {
 #station-success {
     display: none;
 }
+
+.tide-extrema-data {
+    text-align: left;  
+}

@@ -4,57 +4,45 @@ $(function () {
     });
 });
 
-
 $(function () {
     $('#myModal').on('click', function () {
         $('#welcome-modal').hide();
     });
 });
 
-// Turn on
 $(function () {
     $('a#turn-on').on('click', function () {
         $.getJSON('/turn-on',
-            function (data) {
-                //do nothing
-            });
+            function (data) {});
         return false;
     });
 });
 
-// Turn off
 $(function () {
     $('a#turn-off').on('click', function () {
         $.getJSON('/turn-off',
-            function (data) {
-                //do nothing
-            });
+            function (data) {});
         return false;
     });
 });
 
-// Flow
 $(function () {
     $('a#flow').on('click', function () {
         $.getJSON('/flow',
-            function (data) {
-                //do nothing
-            });
+            function (data) {});
         return false;
     });
 });
 
-// Tide extrema
 $(function () {
     $('a#show-times').on('click', function () {
         $.getJSON('/show-tide-extrema',
-            function (data) {
-                //do nothing
-            });
+            function (data) {});
         window.location.reload();
         return false;
     });
 });
+
 
 // Display arrows next to tide data
 $(function(){
@@ -67,6 +55,7 @@ $(function(){
         }
     })
 })
+
 
 // Get region location from dropdown and append it to tidal information
 $(function () {
@@ -91,12 +80,13 @@ $(function () {
             data: JSON.stringify({station_data: station_data}),
             dataType: "json"
         });
+
         $('#station-loader').show();
         setTimeout(function () {
             $('#station-loader').hide();
             $('#station-success').show();
             window.location.reload();
-        }, 8000);
+        }, 7500);
     });
 });
 
@@ -104,9 +94,9 @@ $(function () {
 $(function () {
     $(document).ready(function () {
         $('.dropdown-submenu a.station').on("click", function (e) {
-            $(this).next('ul').toggle();
             e.stopPropagation();
             e.preventDefault();
+            $(this).next('ul').toggle();
         });
     });
 });

@@ -110,7 +110,9 @@
                             <p class="mb-0">Oh well, moving on.</p>
                         </div>
                     {% endif %}
-                    <canvas id="lineChart"></canvas>
+                    {% if tide_times %}
+                        <canvas id="lineChart"></canvas>
+                    {% endif %}
                 </div>
                 <div class="col">
                     <div class="card ">

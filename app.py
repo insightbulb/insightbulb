@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
-from tide_data import split_times_to_datetimes, get_data_points, split_tide_string
+from tide_data import split_times_to_datetimes, get_data_points
 
 
 from datetime import datetime
@@ -66,13 +66,11 @@ def index():
         print("STATION_DATA:", station_data)
         for extreme in extrema:
             current_times.append(extreme)
-    
-    split_times = split_tide_string(current_times)
 
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
                            current_weekday=current_weekday, current_date=current_date,
-                           tide_times=split_times, station_name=station_name)
+                           tide_times=current_times, station_name=station_name)
 
 
 @app.route('/show-tide-extrema')
@@ -111,23 +109,15 @@ def turn_off():
 def tidal_flow(times):
     bulbs = discover_bulbs()
     split_times = list()
-    displayable_tides = list()
 
-    # split_times, contains elements in the form:
-    # e.g., ['2:51 ', 'AM', 'high 1.62 ft.']
-    # We parse this array into a string to be sent to the frontend
-    parsed_time = ""
+    # split_times contains elements in the form:
+    # ['2:51 ', 'AM', 'high 1.62 ft.']
     for tide in times:
-        high_low = re.split('([AP]M)', tide)
+        high_low = re.split('(low|high)', tide)
         split_times.append(high_low)
-    for split in split_times:
-        for tide in split:
-            parsed_time += (" %s" % (tide,))
-        displayable_tides.append(parsed_time)
-        parsed_time = ""
 
     if len(bulbs) is 0:
-        return displayable_tides
+        return split_times
 
     # Notify when a station is selected
     my_bulb = Bulb(bulbs[0].get("ip"))
@@ -153,13 +143,14 @@ def tidal_flow(times):
     # Data points are converted to datetime objects
     # TODO: Implement the 'brightness-to-tide' feature with a thread that calls a
     #  function that runs a loop for as long as the known tidal change
-    now = datetime.today()
-    tide_times = split_times_to_datetimes(split_times)
-    data_points = get_data_points(now, tide_times)
-    delay = (data_points.pop() - now).total_seconds()
-    threading.Timer(delay, lambda: my_bulb.start_flow(delayed_alert_flow)).start()
+    now = datetime.now()
+    tidal_datetimes = split_times_to_datetimes(split_times)
+    data_points = get_data_points(now, tidal_datetimes)
+    if len(data_points) > 0:
+        delay = (data_points.pop() - now).total_seconds()
+        threading.Timer(delay, lambda: my_bulb.start_flow(delayed_alert_flow)).start()
 
-    return displayable_tides
+    return split_times
 
 
 if __name__ == '__main__':

@@ -5,12 +5,6 @@ $(function () {
 });
 
 $(function () {
-    $('#myModal').on('click', function () {
-        $('#welcome-modal').hide();
-    });
-});
-
-$(function () {
     $('a#turn-on').on('click', function () {
         $.getJSON('/turn-on',
             function (data) {});
@@ -43,18 +37,16 @@ $(function () {
     });
 });
 
-
 // Display arrows next to tide data
-$(function(){
-    $('.tide-extrema-data-tide').each(function(index) {
+$(function () {
+    $('.tide-extrema-data-tide').each(function () {
         if ($(this).text().indexOf('high') >= 0) {
             $(this).nextAll().eq(1).children().addClass('fas fa-chevron-circle-up');
-        }
-        else {
+        } else {
             $(this).nextAll().eq(1).children().addClass('fas fa-chevron-circle-down');
         }
-    })
-})
+    });
+});
 
 
 // Get region location from dropdown and append it to tidal information
@@ -86,7 +78,7 @@ $(function () {
             $('#station-loader').hide();
             $('#station-success').show();
             window.location.reload();
-        }, 7500);
+        }, 7000);
     });
 });
 
@@ -105,30 +97,30 @@ $(function () {
 // A dummy template for how the tide data will be graphed
 $(function () {
     $(document).ready(function () {
-
         var height_points = [];
         var time_points = [];
 
         $(".tide-extrema-data-height").each(function () {
-            height_points.push($(this).text().replace(' ft.',''))
-        })
+            height_points.push($(this).text().replace(' ft.',''));
+        });
+
         $(".tide-extrema-data-time").each(function () {
-            time_points.push($(this).text())
-        })
+            time_points.push($(this).text());
+        });
 
         var ctxL = document.getElementById("lineChart").getContext('2d');
         var myLineChart = new Chart(ctxL, {
             type: 'line',
             data: {
-                labels: [time_points[0], time_points[1], time_points[2], time_points[3]],
+                labels: time_points,
                 datasets: [{
                     label: "Predicted tide heights",
-                    data: [height_points[0], height_points[1], height_points[2], height_points[3]],
+                    data: height_points,
                     backgroundColor: [
-                        'rgba(105, 0, 132, .2)',
+                        'rgba(255, 142, 22, .1)',
                     ],
                     borderColor: [
-                        'rgba(200, 99, 132, .7)',
+                        'rgba(0, 25, 127, .7)',
                     ],
                     borderWidth: 2
                 },

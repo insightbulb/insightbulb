@@ -1,5 +1,6 @@
 from datetime import datetime
 import time
+import re
 
 
 def split_times_to_datetimes(split_times):
@@ -44,3 +45,12 @@ def get_light_intensity(data_points):
     light_intensity = (numerator / denomenator) * 100
 
     return light_intensity
+
+def split_tide_string(times):
+    # Split the tide time data 
+    # Example: [' 1:48  AM ', 'low', ' 0.71 ft.']
+    tide_string = []
+    for data in times:
+        tide_regex = re.split('(low|high)', data)
+        tide_string.append(tide_regex)
+    return tide_string

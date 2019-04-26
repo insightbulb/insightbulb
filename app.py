@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
-from tide_data import split_times_to_datetimes, get_data_points
+from tide_data import split_times_to_datetimes, get_data_points, split_tide_string
 
 import threading
 from datetime import datetime
@@ -65,11 +65,13 @@ def index():
         print("STATION_DATA:", station_data)
         for extreme in extrema:
             current_times.append(extreme)
+    
+    split_times = split_tide_string(current_times)
 
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
                            current_weekday=current_weekday, current_date=current_date,
-                           tide_times=current_times, station_name=station_name)
+                           tide_times=split_times, station_name=station_name)
 
 
 @app.route('/show-tide-extrema')

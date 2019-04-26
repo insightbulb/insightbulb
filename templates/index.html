@@ -125,7 +125,9 @@
                                 <tbody>
                                 {% for time in tide_times %}
                                     <tr>
-                                        <td class="tide-extrema-data">{{ time }}</td>
+                                        <td class="tide-extrema-data-time">{{ time[0] }}</td>
+                                        <td class="tide-extrema-data-tide">{{ time[1] }}</td>
+                                        <td class="tide-extrema-data-height">{{ time[2] }}</td>
                                         <td class='arrows'><i></i></td>
                                     </tr>
                                 {% endfor %}

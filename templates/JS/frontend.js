@@ -58,12 +58,12 @@ $(function () {
 
 // Display arrows next to tide data
 $(function(){
-    $('.tide-extrema-data').each(function(index) {
+    $('.tide-extrema-data-tide').each(function(index) {
         if ($(this).text().indexOf('high') >= 0) {
-            $(this).next().children().addClass('fas fa-chevron-circle-up');
+            $(this).nextAll().eq(1).children().addClass('fas fa-chevron-circle-up');
         }
         else {
-            $(this).next().children().addClass('fas fa-chevron-circle-down');
+            $(this).nextAll().eq(1).children().addClass('fas fa-chevron-circle-down');
         }
     })
 })
@@ -115,36 +115,16 @@ $(function () {
 // A dummy template for how the tide data will be graphed
 $(function () {
     $(document).ready(function () {
-        //line
-        var data = [];
-        $("#tide-table tr").each(function () {
-            data.push($(this).find(".tide-extrema-data").html());
-        });
 
-        // This loop is a little strange as the data we pull from the html is a string
-        // What we do then is map all digits from the string into an array
-        // The n and n-1 indices contain the sig-figs of the height, so the third
-        // line of the loop gives our value after a division of 100
-        var count = 0;
         var height_points = [];
         var time_points = [];
-        for (let i = 0; i < 4; i++) {
-            var tide_height = data[i];
-            var parsed_values = tide_height.match(/\d+/g).map(Number);
-            height_points.push(((parsed_values[2] * 100) + parsed_values[3]) / 100.0);
 
-            // Here we simply add the times to an array, we splice in a zero
-            // to keep proper format
-            var min = "";
-            parsed_values[1] < 10 ? min = "0" + parsed_values[1].toString() : min = parsed_values[1].toString();
-            if (count < 2) {
-                time_points.push(parsed_values[0].toString() + ":" + min + " AM")
-            } else {
-                time_points.push(parsed_values[0].toString() + ":" + min + " PM")
-            }
-            count++;
-        }
-        console.log(time_points);
+        $(".tide-extrema-data-height").each(function () {
+            height_points.push($(this).text().replace(' ft.',''))
+        })
+        $(".tide-extrema-data-time").each(function () {
+            time_points.push($(this).text())
+        })
 
         var ctxL = document.getElementById("lineChart").getContext('2d');
         var myLineChart = new Chart(ctxL, {

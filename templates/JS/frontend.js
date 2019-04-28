@@ -183,7 +183,7 @@ $(function () {
               responsive: true
             }
           });
-
+      window.location.reload();
     });
 });
 
@@ -233,7 +233,7 @@ $(function () {
           responsive: true
         }
       });
-
+    window.location.reload();
   });
 });
 
@@ -285,6 +285,7 @@ $(function () {
           responsive: true
         }
       });
+    window.location.reload();
 
   });
 });

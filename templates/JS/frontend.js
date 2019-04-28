@@ -48,6 +48,15 @@ $(function () {
     });
 });
 
+var ctxL = document.getElementById("lineChart").getContext('2d');
+
+$(function () {
+  $('a#wind').on('click', function () {
+
+        ctxL = document.getElementById("lineC").getContext('2d');
+    return false;
+  });
+});
 
 // Get region location from dropdown and append it to tidal information
 $(function () {
@@ -143,3 +152,102 @@ $(function () {
         });
     });
 });
+
+$(function () {
+  $(document).ready(function () {
+    var height_points = [];
+    var time_points = [];
+
+    $(".tide-extrema-data-height").each(function () {
+      height_points.push($(this).text().replace(' ft.',''));
+    });
+
+    $(".tide-extrema-data-time").each(function () {
+      time_points.push($(this).text());
+    });
+
+    var ctxL = document.getElementById("lineChart2").getContext('2d');
+    var myLineChart = new Chart(ctxL, {
+      type: 'line',
+      data: {
+        labels: time_points,
+        datasets: [{
+          label: "Predicted tide heights",
+          data: 70, 70, 70, 70,
+          backgroundColor: [
+            'rgba(255, 142, 22, .1)',
+          ],
+          borderColor: [
+            'rgba(0, 25, 127, .7)',
+          ],
+          borderWidth: 2
+        },
+          // {
+          //     label: "Actual",
+          //     data: [0.87, 1.15, 1.08, 0.71],
+          //     backgroundColor: [
+          //         'rgba(0, 137, 132, .2)',
+          //     ],
+          //     borderColor: [
+          //         'rgba(0, 10, 130, .7)',
+          //     ],
+          //     borderWidth: 2
+          // }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  });
+});
+
+$(function () {
+  $(document).ready(function () {
+    var height_points = [];
+    var time_points = [];
+
+    $(".tide-extrema-data-height").each(function () {
+      height_points.push($(this).text().replace(' ft.',''));
+    });
+
+    $(".tide-extrema-data-time").each(function () {
+      time_points.push($(this).text());
+    });
+
+    var ctxL = document.getElementById("lineChart3").getContext('2d');
+    var myLineChart = new Chart(ctxL, {
+      type: 'line',
+      data: {
+        labels: time_points,
+        datasets: [{
+          label: "Predicted tide heights",
+          data: 0, 20, 40, 60,
+          backgroundColor: [
+            'rgba(255, 142, 22, .1)',
+          ],
+          borderColor: [
+            'rgba(0, 25, 127, .7)',
+          ],
+          borderWidth: 2
+        },
+          // {
+          //     label: "Actual",
+          //     data: [0.87, 1.15, 1.08, 0.71],
+          //     backgroundColor: [
+          //         'rgba(0, 137, 132, .2)',
+          //     ],
+          //     borderColor: [
+          //         'rgba(0, 10, 130, .7)',
+          //     ],
+          //     borderWidth: 2
+          // }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  });
+});
+

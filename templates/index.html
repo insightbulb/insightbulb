@@ -43,16 +43,24 @@
                                         aria-haspopup="true"
                                         aria-expanded="false">Devices
                                 </button>
+
                                 <ul class="dropdown-menu" role="menu">
                                     {% for bulb in devices %}
                                         <li class="dropdown-submenu"><a href="#" class="dropdown-item station"
                                                                         data-name="{{ bulb }}">{{ bulb }}</a></li>
                                     {% endfor %}
                                 </ul>
+
                             </div>
                         </div>
+
                     </div>
                 </div>
+              <div class="btn-group" role="group">
+                <a href="#"  id="wind" class="btn btn-success">Wind speed</a>
+                <a href="#"  id="height" class="btn btn-info">Tide Height</a>
+                <a href="#"  id="default" class="btn btn-warning">Default</a>
+              </div>
                 <div id="station-column" class="col">
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -109,6 +117,7 @@
                             <hr>
                             <p class="mb-0">Oh well, moving on.</p>
                         </div>
+
                     {% endif %}
                     {% if tide_times %}
                         <canvas id="lineChart"></canvas>

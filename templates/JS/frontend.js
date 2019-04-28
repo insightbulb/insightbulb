@@ -48,12 +48,32 @@ $(function () {
     });
 });
 
-var ctxL = document.getElementById("lineChart").getContext('2d');
+//from this line to line 78 are suppose to be on-click functions that change the chart variable which
+//should also chane the graphs because of an if check wihin the graph functions
+
+var chart = "lineChart";
+var ctxL = document.getElementById("lineChart").innerHTML = chart;
 
 $(function () {
   $('a#wind').on('click', function () {
 
-        ctxL = document.getElementById("lineC").getContext('2d');
+        chart = "lineChart";
+    return false;
+  });
+});
+
+$(function () {
+  $('a#height').on('click', function () {
+
+    chart = "lineChart2";
+    return false;
+  });
+});
+
+$(function () {
+  $('a#default').on('click', function () {
+
+    chart = "lineChart3";
     return false;
   });
 });
@@ -117,39 +137,42 @@ $(function () {
             time_points.push($(this).text());
         });
 
-        var ctxL = document.getElementById("lineChart").getContext('2d');
-        var myLineChart = new Chart(ctxL, {
+        if (chart == "lineChart") {
+
+          //var ctxL = document.getElementById("lineChart").getContext('2d');
+          var myLineChart = new Chart(ctxL, {
             type: 'line',
             data: {
-                labels: time_points,
-                datasets: [{
-                    label: "Predicted tide heights",
-                    data: height_points,
-                    backgroundColor: [
-                        'rgba(255, 142, 22, .1)',
-                    ],
-                    borderColor: [
-                        'rgba(0, 25, 127, .7)',
-                    ],
-                    borderWidth: 2
-                },
-                    // {
-                    //     label: "Actual",
-                    //     data: [0.87, 1.15, 1.08, 0.71],
-                    //     backgroundColor: [
-                    //         'rgba(0, 137, 132, .2)',
-                    //     ],
-                    //     borderColor: [
-                    //         'rgba(0, 10, 130, .7)',
-                    //     ],
-                    //     borderWidth: 2
-                    // }
-                ]
+              labels: time_points,
+              datasets: [{
+                label: "Predicted tide heights",
+                data: height_points,
+                backgroundColor: [
+                  'rgba(255, 142, 22, .1)',
+                ],
+                borderColor: [
+                  'rgba(0, 25, 127, .7)',
+                ],
+                borderWidth: 2
+              },
+                // {
+                //     label: "Actual",
+                //     data: [0.87, 1.15, 1.08, 0.71],
+                //     backgroundColor: [
+                //         'rgba(0, 137, 132, .2)',
+                //     ],
+                //     borderColor: [
+                //         'rgba(0, 10, 130, .7)',
+                //     ],
+                //     borderWidth: 2
+                // }
+              ]
             },
             options: {
-                responsive: true
+              responsive: true
             }
-        });
+          });
+        }
     });
 });
 
@@ -166,39 +189,42 @@ $(function () {
       time_points.push($(this).text());
     });
 
-    var ctxL = document.getElementById("lineChart2").getContext('2d');
-    var myLineChart = new Chart(ctxL, {
-      type: 'line',
-      data: {
-        labels: time_points,
-        datasets: [{
-          label: "Predicted tide heights",
-          data: 70, 70, 70, 70,
-          backgroundColor: [
-            'rgba(255, 142, 22, .1)',
-          ],
-          borderColor: [
-            'rgba(0, 25, 127, .7)',
-          ],
-          borderWidth: 2
+    if (chart == "lineChart2") {
+
+      //var ctxL = document.getElementById(chart).getContext('2d');
+      var myLineChart = new Chart(ctxL, {
+        type: 'line',
+        data: {
+          labels: time_points,
+          datasets: [{
+            label: "Predicted tide heights",
+            data: [70, 70, 70, 70],
+            backgroundColor: [
+              'rgba(255, 142, 22, .1)',
+            ],
+            borderColor: [
+              'rgba(0, 25, 127, .7)',
+            ],
+            borderWidth: 2
+          },
+            // {
+            //     label: "Actual",
+            //     data: [0.87, 1.15, 1.08, 0.71],
+            //     backgroundColor: [
+            //         'rgba(0, 137, 132, .2)',
+            //     ],
+            //     borderColor: [
+            //         'rgba(0, 10, 130, .7)',
+            //     ],
+            //     borderWidth: 2
+            // }
+          ]
         },
-          // {
-          //     label: "Actual",
-          //     data: [0.87, 1.15, 1.08, 0.71],
-          //     backgroundColor: [
-          //         'rgba(0, 137, 132, .2)',
-          //     ],
-          //     borderColor: [
-          //         'rgba(0, 10, 130, .7)',
-          //     ],
-          //     borderWidth: 2
-          // }
-        ]
-      },
-      options: {
-        responsive: true
-      }
-    });
+        options: {
+          responsive: true
+        }
+      });
+    }
   });
 });
 
@@ -215,39 +241,42 @@ $(function () {
       time_points.push($(this).text());
     });
 
-    var ctxL = document.getElementById("lineChart3").getContext('2d');
-    var myLineChart = new Chart(ctxL, {
-      type: 'line',
-      data: {
-        labels: time_points,
-        datasets: [{
-          label: "Predicted tide heights",
-          data: 0, 20, 40, 60,
-          backgroundColor: [
-            'rgba(255, 142, 22, .1)',
-          ],
-          borderColor: [
-            'rgba(0, 25, 127, .7)',
-          ],
-          borderWidth: 2
+    if (chart == "lineChart3") {
+
+      //var ctxL = document.getElementById(chart).getContext('2d');
+      var myLineChart = new Chart(ctxL, {
+        type: 'line',
+        data: {
+          labels: time_points,
+          datasets: [{
+            label: "Predicted tide heights",
+            data: [0, 20, 40, 60],
+            backgroundColor: [
+              'rgba(255, 142, 22, .1)',
+            ],
+            borderColor: [
+              'rgba(0, 25, 127, .7)',
+            ],
+            borderWidth: 2
+          },
+            // {
+            //     label: "Actual",
+            //     data: [0.87, 1.15, 1.08, 0.71],
+            //     backgroundColor: [
+            //         'rgba(0, 137, 132, .2)',
+            //     ],
+            //     borderColor: [
+            //         'rgba(0, 10, 130, .7)',
+            //     ],
+            //     borderWidth: 2
+            // }
+          ]
         },
-          // {
-          //     label: "Actual",
-          //     data: [0.87, 1.15, 1.08, 0.71],
-          //     backgroundColor: [
-          //         'rgba(0, 137, 132, .2)',
-          //     ],
-          //     borderColor: [
-          //         'rgba(0, 10, 130, .7)',
-          //     ],
-          //     borderWidth: 2
-          // }
-        ]
-      },
-      options: {
-        responsive: true
-      }
-    });
+        options: {
+          responsive: true
+        }
+      });
+    }
   });
 });
 

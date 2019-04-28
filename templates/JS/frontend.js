@@ -49,15 +49,20 @@ $(function () {
 });
 
 //from this line to line 78 are suppose to be on-click functions that change the chart variable which
-//should also chane the graphs because of an if check wihin the graph functions
+//should also chane the graphs because of an if check within the graph functions
 
-var chart = "lineChart";
-var ctxL = document.getElementById("lineChart").innerHTML = chart;
+var chart1 = "lineChart";
+var chart2 = "";
+var chart3 = "";
+//var ctxL = document.getElementById("lineChart").innerHTML = chart;
 
 $(function () {
   $('a#wind').on('click', function () {
 
-        chart = "lineChart";
+        chart1 = "";
+        chart2 = "lineChart";
+        chart3 = "";
+    window.location.reload();
     return false;
   });
 });
@@ -65,7 +70,10 @@ $(function () {
 $(function () {
   $('a#height').on('click', function () {
 
-    chart = "lineChart2";
+    chart1 = "";
+    chart2 = "";
+    chart3 = "lineChart";
+    window.location.reload();
     return false;
   });
 });
@@ -73,7 +81,10 @@ $(function () {
 $(function () {
   $('a#default').on('click', function () {
 
-    chart = "lineChart3";
+    chart1 = "lineChart";
+    chart2 = "";
+    chart3 = "";
+    window.location.reload();
     return false;
   });
 });
@@ -137,9 +148,9 @@ $(function () {
             time_points.push($(this).text());
         });
 
-        if (chart == "lineChart") {
 
-          //var ctxL = document.getElementById("lineChart").getContext('2d');
+
+          var ctxL = document.getElementById(chart1).getContext('2d');
           var myLineChart = new Chart(ctxL, {
             type: 'line',
             data: {
@@ -172,7 +183,7 @@ $(function () {
               responsive: true
             }
           });
-        }
+
     });
 });
 
@@ -189,9 +200,7 @@ $(function () {
       time_points.push($(this).text());
     });
 
-    if (chart == "lineChart2") {
-
-      //var ctxL = document.getElementById(chart).getContext('2d');
+      var ctxL = document.getElementById(chart2).getContext('2d');
       var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: {
@@ -224,7 +233,7 @@ $(function () {
           responsive: true
         }
       });
-    }
+
   });
 });
 
@@ -241,9 +250,9 @@ $(function () {
       time_points.push($(this).text());
     });
 
-    if (chart == "lineChart3") {
 
-      //var ctxL = document.getElementById(chart).getContext('2d');
+
+      var ctxL = document.getElementById(chart3).getContext('2d');
       var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: {
@@ -276,7 +285,7 @@ $(function () {
           responsive: true
         }
       });
-    }
+
   });
 });
 

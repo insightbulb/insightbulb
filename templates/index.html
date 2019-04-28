@@ -56,11 +56,6 @@
 
                     </div>
                 </div>
-              <div class="btn-group" role="group">
-                <a href="#"  id="wind" class="btn btn-success">Wind speed</a>
-                <a href="#"  id="height" class="btn btn-info">Tide Height</a>
-                <a href="#"  id="default" class="btn btn-warning">Default</a>
-              </div>
                 <div id="station-column" class="col">
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -103,7 +98,13 @@
                 </div>
                 <div class="col"></div>
             </div>
+          <div class="btn-group" role="group" left>
+            <a href="#"  id="wind" class="btn btn-success">Wind speed</a>
+            <a href="#"  id="wave" class="btn btn-info">Tide Height</a>
+            <a href="#"  id="default" class="btn btn-warning">Default</a>
+          </div>
             <div class="row data-row">
+
                 <div id="tide-graph" class="col graph-container">
                     {% if not tide_times %}
                         <div class="alert alert-warning" role="alert">
@@ -120,7 +121,9 @@
 
                     {% endif %}
                     {% if tide_times %}
-                        <canvas id="lineChart"></canvas>
+                        <canvas id="tideChart"></canvas>
+                        <canvas id="windChart"></canvas>
+                        <canvas id="waveChart"></canvas>
 
                     {% endif %}
                 </div>

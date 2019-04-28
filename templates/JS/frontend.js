@@ -48,43 +48,38 @@ $(function () {
     });
 });
 
-//from this line to line 78 are suppose to be on-click functions that change the chart variable which
-//should also chane the graphs because of an if check within the graph functions
-
-var chart1 = "lineChart";
-var chart2 = "";
-var chart3 = "";
-//var ctxL = document.getElementById("lineChart").innerHTML = chart;
-
 $(function () {
   $('a#wind').on('click', function () {
+    //e.preventDefault();
+    //e.stopPropagation();
 
-        chart1 = "";
-        chart2 = "lineChart";
-        chart3 = "";
-    window.location.reload();
+    $("tideChart").hide();
+    $("windChart").show();
+    $("waveChart").hide();
     return false;
   });
 });
 
 $(function () {
-  $('a#height').on('click', function () {
+  $('a#wave').on('click', function () {
+    //e.preventDefault();
+    //e.stopPropagation();
 
-    chart1 = "";
-    chart2 = "";
-    chart3 = "lineChart";
-    window.location.reload();
+    $("tideChart").hide();
+    $("windChart").hide();
+    $("waveChart").show();
     return false;
   });
 });
 
 $(function () {
-  $('a#default').on('click', function () {
+  $('a#default').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-    chart1 = "lineChart";
-    chart2 = "";
-    chart3 = "";
-    window.location.reload();
+    $("tideChart").show();
+    $("windChart").hide();
+    $("waveChart").hide();
     return false;
   });
 });
@@ -150,7 +145,7 @@ $(function () {
 
 
 
-          var ctxL = document.getElementById(chart1).getContext('2d');
+          var ctxL = document.getElementById("tideChart").getContext('2d');
           var myLineChart = new Chart(ctxL, {
             type: 'line',
             data: {
@@ -200,7 +195,7 @@ $(function () {
       time_points.push($(this).text());
     });
 
-      var ctxL = document.getElementById(chart2).getContext('2d');
+      var ctxL = document.getElementById("windChart").getContext('2d');
       var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: {
@@ -252,7 +247,7 @@ $(function () {
 
 
 
-      var ctxL = document.getElementById(chart3).getContext('2d');
+      var ctxL = document.getElementById("waveChart").getContext('2d');
       var myLineChart = new Chart(ctxL, {
         type: 'line',
         data: {

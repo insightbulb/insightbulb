@@ -54,9 +54,9 @@ $(function () {
     //e.stopPropagation();
 
     $("tideChart").hide();
-    $("windChart").show();
+    $("windChart").hide();
     $("waveChart").hide();
-    return false;
+
   });
 });
 
@@ -67,20 +67,20 @@ $(function () {
 
     $("tideChart").hide();
     $("windChart").hide();
-    $("waveChart").show();
-    return false;
+    $("waveChart").hide();
+
   });
 });
 
 $(function () {
-  $('a#default').on('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+  $('a#default').on('click', function () {
+    //e.preventDefault();
+    //e.stopPropagation();
 
-    $("tideChart").show();
+    $("tideChart").hide();
     $("windChart").hide();
     $("waveChart").hide();
-    return false;
+
   });
 });
 

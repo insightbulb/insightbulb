@@ -110,9 +110,14 @@
                             <p class="mb-0">Oh well, moving on.</p>
                         </div>
                     {% endif %}
-                    {% if tide_times %}
-                        <canvas id="lineChart"></canvas>
-                    {% endif %}
+                  {% if tide_times %}
+                  <div class="btn-group">
+                    <a href="#" class="btn btn-outline-secondary" id="change-graph-waves">Waves</a>
+                    <a href="#" class="btn btn-outline-secondary" id="change-graph-tides">Tides</a>
+                  </div>
+                  <canvas id="lineChart"></canvas>
+                  <canvas id="waveChart"></canvas>
+                  {% endif %}
                 </div>
                 <div class="col">
                     <div class="card ">

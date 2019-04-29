@@ -48,41 +48,73 @@ $(function () {
     });
 });
 
-$(function () {
-  $('a#wind').on('click', function () {
-    //e.preventDefault();
-    //e.stopPropagation();
+var tideDisplayed = false;
+function displayChart(){
+  if(tideDisplayed)
+  {
+    document.getElementById("tideChart").style.display = "none";
+    tideDisplayed = false;
+  }
+  else
+  {
+    document.getElementById("tideChart").style.display = "inline";
+    tideDisplayed = true;
+  }
+}
 
-    $("tideChart").hide();
-    $("windChart").hide();
-    $("waveChart").hide();
+document.getElementById("default").onclick = function(){ displayChart(); }
 
-  });
-});
+var waveDisplayed = false;
+function displayWave(){
+  if(waveDisplayed)
+  {
+    document.getElementById("waveHeight").style.display = "none";
+    waveDisplayed = false;
+  }
+  else
+  {
+    document.getElementById("waveHeight").style.display = "inline";
+    waveDisplayed = true;
+  }
+}
 
-$(function () {
-  $('a#wave').on('click', function () {
-    //e.preventDefault();
-    //e.stopPropagation();
+document.getElementById("wave").onclick = function(){ displayWave(); }
 
-    $("tideChart").hide();
-    $("windChart").hide();
-    $("waveChart").hide();
-
-  });
-});
-
-$(function () {
-  $('a#default').on('click', function () {
-    //e.preventDefault();
-    //e.stopPropagation();
-
-    $("tideChart").hide();
-    $("windChart").hide();
-    $("waveChart").hide();
-
-  });
-});
+// $(function () {
+//   $('a#wave').on('click', function () {
+//     //e.preventDefault();
+//     //e.stopPropagation();
+//
+//     tideChar.hide();
+//     //$("windChart").hide();
+//     waveHeight.show();
+//
+//   });
+// });
+//
+// $(function () {
+//   $('a#wave').on('click', function () {
+//     //e.preventDefault();
+//     //e.stopPropagation();
+//
+//     $("tideChart").hide();
+//     $("windChart").hide();
+//     $("waveChart").hide();
+//
+//   });
+// });
+//
+// $(function () {
+//   $('a#default').on('click', function () {
+//     //e.preventDefault();
+//     //e.stopPropagation();
+//
+//     $("tideChart").hide();
+//     $("windChart").hide();
+//     $("waveChart").hide();
+//
+//   });
+// });
 
 // Get region location from dropdown and append it to tidal information
 $(function () {
@@ -146,7 +178,7 @@ $(function () {
 
 
           var ctxL = document.getElementById("tideChart").getContext('2d');
-          var myLineChart = new Chart(ctxL, {
+          var tideChart = new Chart(ctxL, {
             type: 'line',
             data: {
               labels: time_points,
@@ -178,110 +210,48 @@ $(function () {
               responsive: true
             }
           });
-      window.location.reload();
     });
 });
+
 
 $(function () {
   $(document).ready(function () {
-    var height_points = [];
-    var time_points = [];
-
-    $(".tide-extrema-data-height").each(function () {
-      height_points.push($(this).text().replace(' ft.',''));
-    });
-
-    $(".tide-extrema-data-time").each(function () {
-      time_points.push($(this).text());
-    });
-
-      var ctxL = document.getElementById("windChart").getContext('2d');
-      var myLineChart = new Chart(ctxL, {
-        type: 'line',
-        data: {
-          labels: time_points,
-          datasets: [{
-            label: "Predicted tide heights",
-            data: [70, 70, 70, 70],
-            backgroundColor: [
-              'rgba(255, 142, 22, .1)',
-            ],
-            borderColor: [
-              'rgba(0, 25, 127, .7)',
-            ],
-            borderWidth: 2
-          },
-            // {
-            //     label: "Actual",
-            //     data: [0.87, 1.15, 1.08, 0.71],
-            //     backgroundColor: [
-            //         'rgba(0, 137, 132, .2)',
-            //     ],
-            //     borderColor: [
-            //         'rgba(0, 10, 130, .7)',
-            //     ],
-            //     borderWidth: 2
-            // }
-          ]
-        },
-        options: {
-          responsive: true
+    var ctx = document.getElementById('waveHeight').getContext('2d');
+    var waveHeight = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
         }
-      });
-    window.location.reload();
+      }
+    });
   });
 });
-
-$(function () {
-  $(document).ready(function () {
-    var height_points = [];
-    var time_points = [];
-
-    $(".tide-extrema-data-height").each(function () {
-      height_points.push($(this).text().replace(' ft.',''));
-    });
-
-    $(".tide-extrema-data-time").each(function () {
-      time_points.push($(this).text());
-    });
-
-
-
-      var ctxL = document.getElementById("waveChart").getContext('2d');
-      var myLineChart = new Chart(ctxL, {
-        type: 'line',
-        data: {
-          labels: time_points,
-          datasets: [{
-            label: "Predicted tide heights",
-            data: [0, 20, 40, 60],
-            backgroundColor: [
-              'rgba(255, 142, 22, .1)',
-            ],
-            borderColor: [
-              'rgba(0, 25, 127, .7)',
-            ],
-            borderWidth: 2
-          },
-            // {
-            //     label: "Actual",
-            //     data: [0.87, 1.15, 1.08, 0.71],
-            //     backgroundColor: [
-            //         'rgba(0, 137, 132, .2)',
-            //     ],
-            //     borderColor: [
-            //         'rgba(0, 10, 130, .7)',
-            //     ],
-            //     borderWidth: 2
-            // }
-          ]
-        },
-        options: {
-          responsive: true
-        }
-      });
-    window.location.reload();
-
-  });
-});
-

@@ -1,4 +1,18 @@
 $(function () {
+    $('#change-graph-waves').on('click', function () {
+        $("#lineChart").hide();
+        $("#waveChart").show();
+    })
+});
+
+$(function () {
+    $('#change-graph-tides').on('click', function () {
+        $("#lineChart").show();
+        $("#waveChart").hide();
+    })
+});
+
+$(function () {
     $('#help-modal').on('click', function () {
         $('#welcome-modal').modal('show');
     });
@@ -7,7 +21,8 @@ $(function () {
 $(function () {
     $('a#turn-on').on('click', function () {
         $.getJSON('/turn-on',
-            function (data) {});
+            function (data) {
+            });
         return false;
     });
 });
@@ -15,7 +30,8 @@ $(function () {
 $(function () {
     $('a#turn-off').on('click', function () {
         $.getJSON('/turn-off',
-            function (data) {});
+            function (data) {
+            });
         return false;
     });
 });
@@ -23,7 +39,8 @@ $(function () {
 $(function () {
     $('a#flow').on('click', function () {
         $.getJSON('/flow',
-            function (data) {});
+            function (data) {
+            });
         return false;
     });
 });
@@ -31,7 +48,8 @@ $(function () {
 $(function () {
     $('a#show-times').on('click', function () {
         $.getJSON('/show-tide-extrema',
-            function (data) {});
+            function (data) {
+            });
         window.location.reload();
         return false;
     });
@@ -47,7 +65,6 @@ $(function () {
         }
     });
 });
-
 
 // Get region location from dropdown and append it to tidal information
 $(function () {
@@ -82,7 +99,6 @@ $(function () {
     });
 });
 
-
 $(function () {
     $(document).ready(function () {
         $('.dropdown-submenu a.station').on("click", function (e) {
@@ -99,9 +115,10 @@ $(function () {
     $(document).ready(function () {
         var height_points = [];
         var time_points = [];
+        $("#waveChart").hide();
 
         $(".tide-extrema-data-height").each(function () {
-            height_points.push($(this).text().replace(' ft.',''));
+            height_points.push($(this).text().replace(' ft.', ''));
         });
 
         $(".tide-extrema-data-time").each(function () {
@@ -141,5 +158,47 @@ $(function () {
                 responsive: true
             }
         });
+    });
+});
+
+$(function () {
+    var ctx = document.getElementById('waveChart').getContext('2d');
+    var waveChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            datasets: [{
+                label: 'Wave Heights in feet',
+                data: [7, 12, 3, 5, 2, 3, 1],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 234, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 234, 64, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
     });
 });

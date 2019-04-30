@@ -60,3 +60,20 @@ def get_station_by_region(region):
     local_stations = stations_dict.get(region)
     print(local_stations)
     return local_stations
+
+
+def get_lunar_data(station):
+    lunar_data = list()
+    trimmed_data = list()
+    tide_http = httplib2.Http()
+    lunar_url = "https://tidesandcurrents.noaa.gov/harcon.html?id=%s" % (station,)
+    lunar_status, lunar_response = tide_http.request(lunar_url)
+    soup = BeautifulSoup(lunar_response, 'html.parser')
+    lunar_table = soup.find("table", attrs={'class': 'table-striped'}).findAll("td", attrs={'class': None})
+
+    for tag in lunar_table:
+        lunar_data.append(tag.text)
+    for i in range(3, len(lunar_data), 6):
+        trimmed_data.append(lunar_data[i])
+
+    return trimmed_data

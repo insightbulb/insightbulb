@@ -40,7 +40,7 @@ def get_light_intensity(data_points):
     next_time_seconds = float(time.mktime(next_time.timetuple()))
 
     numerator = (next_time_seconds - prev_time_seconds) / 10
-    denomenator = current_time_seconds - prev_time_seconds
-    light_intensity = (numerator / denomenator) * 100
+    denominator = current_time_seconds - prev_time_seconds
+    light_intensity = (numerator / denominator) * 100
 
     return light_intensity

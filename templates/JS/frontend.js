@@ -1,14 +1,14 @@
 $(function () {
-    $('#change-graph-waves').on('click', function () {
+    $('#change-graph-lunar').on('click', function () {
         $("#lineChart").hide();
-        $("#waveChart").show();
+        $("#lunarChart").show();
     })
 });
 
 $(function () {
     $('#change-graph-tides').on('click', function () {
         $("#lineChart").show();
-        $("#waveChart").hide();
+        $("#lunarChart").hide();
     })
 });
 
@@ -95,7 +95,7 @@ $(function () {
             $('#station-loader').hide();
             $('#station-success').show();
             window.location.reload();
-        }, 7000);
+        }, 5000);
     });
 });
 
@@ -115,7 +115,8 @@ $(function () {
     $(document).ready(function () {
         var height_points = [];
         var time_points = [];
-        $("#waveChart").hide();
+        $("#lunarChart").hide();
+        $("#lunar-table").hide();
 
         $(".tide-extrema-data-height").each(function () {
             height_points.push($(this).text().replace(' ft.', ''));
@@ -162,43 +163,52 @@ $(function () {
 });
 
 $(function () {
-    var ctx = document.getElementById('waveChart').getContext('2d');
-    var waveChart = new Chart(ctx, {
-        type: 'bar',
+    var lunar_index = [];
+    var lunar_points = [];
+    $(".lunar-data").each(function () {
+        if (lunar_points.length < 50) {
+            lunar_points.push($(this).text());
+        }
+    });
+
+    var i = 0;
+    while (i < lunar_points.length) {
+        lunar_index.push(i);
+        i++;
+    }
+    console.log(lunar_points);
+
+    var ctxl = document.getElementById('lunarChart').getContext('2d');
+    var myLineChart = new Chart(ctxl, {
+        type: 'line',
         data: {
-            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            labels: lunar_index,
             datasets: [{
-                label: 'Wave Heights in feet',
-                data: [7, 12, 3, 5, 2, 3, 1],
+                label: "Lunar phase",
+                data: lunar_points,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 234, 64, 0.2)'
+                    'rgba(255, 142, 22, .1)',
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 234, 64, 1)',
+                    'rgba(0, 25, 127, .7)',
                 ],
-                borderWidth: 1
-            }]
+                borderWidth: 2
+            },
+                // {
+                //     label: "Actual",
+                //     data: [0.87, 1.15, 1.08, 0.71],
+                //     backgroundColor: [
+                //         'rgba(0, 137, 132, .2)',
+                //     ],
+                //     borderColor: [
+                //         'rgba(0, 10, 130, .7)',
+                //     ],
+                //     borderWidth: 2
+                // }
+            ]
         },
         options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+            responsive: true
         }
     });
 });

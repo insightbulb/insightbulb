@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from yeelight import *
 from tide_scraper import *
-from tide_data import split_times_to_datetimes, get_data_points
+from tide_data import split_times_to_datetimes, get_data_points, get_light_intensity
 
 
 from datetime import datetime
@@ -15,6 +15,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 http = httplib2.Http()
 current_times = list()
 station_name = []
+lunar_data = []
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -67,10 +68,19 @@ def index():
         for extreme in extrema:
             current_times.append(extreme)
 
+        ld = get_lunar_data(station_data[0])
+        for data in ld:
+            lunar_data.append(data)
+
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
                            current_weekday=current_weekday, current_date=current_date,
-                           tide_times=current_times, station_name=station_name)
+                           tide_times=current_times, station_name=station_name, lunar=lunar_data)
+
+
+@app.route('/hawaii')
+def hawaii():
+    return render_template('hawaii.html')
 
 
 @app.route('/show-tide-extrema')
@@ -139,18 +149,29 @@ def tidal_flow(times):
         action=Flow.actions.recover,
         transitions=delayed_transitions)
 
+    # This is where the main ambient notifications take place, two thread are run
+    # The first runs an infinite loop adjusting brightness to the tides
+    # While the other runs a delayed thread to run a flow on the next extrema
+
     # Get current time in seconds, data points (prev tide time, current time, next tide time)
     # Data points are converted to datetime objects
-    # TODO: Implement the 'brightness-to-tide' feature with a thread that calls a
-    #  function that runs a loop for as long as the known tidal change
     now = datetime.now()
     tidal_datetimes = split_times_to_datetimes(split_times)
     data_points = get_data_points(now, tidal_datetimes)
+
     if len(data_points) > 0:
+        threading.Thread(target=continuous_tidal_brightness(data_points, my_bulb)).start()
+
         delay = (data_points.pop() - now).total_seconds()
         threading.Timer(delay, lambda: my_bulb.start_flow(delayed_alert_flow)).start()
 
     return split_times
+
+
+def continuous_tidal_brightness(tide_delta, bulb):
+    while True:
+        brightness = get_light_intensity(tide_delta)
+        bulb.set_brightness(brightness=brightness)
 
 
 if __name__ == '__main__':

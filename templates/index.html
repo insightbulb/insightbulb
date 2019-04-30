@@ -113,11 +113,13 @@
                     {% endif %}
                     {% if tide_times %}
                         <div class="btn-group">
-                            <a href="#" class="btn btn-outline-secondary" id="change-graph-waves">Waves</a>
+                            <a href="#" class="btn btn-outline-secondary" id="change-graph-lunar">Lunar</a>
                             <a href="#" class="btn btn-outline-secondary" id="change-graph-tides">Tides</a>
+                            <a href="{{ url_for('hawaii') }}" class="btn btn-outline-secondary" id="change-graph-tides">Hawaiian</a>
+
                         </div>
                         <canvas id="lineChart"></canvas>
-                        <canvas id="waveChart"></canvas>
+                        <canvas id="lunarChart"></canvas>
                     {% endif %}
                 </div>
                 <div class="col">
@@ -146,6 +148,17 @@
                             </table>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <table id="lunar-table" class="table">
+                        <tbody>
+                        {% for luna in lunar %}
+                            <tr>
+                                <td class="lunar-data">{{ luna }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

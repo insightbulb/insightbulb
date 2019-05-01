@@ -104,6 +104,7 @@ $(function () {
         $('.dropdown-submenu a.station').on("click", function (e) {
             e.stopPropagation();
             e.preventDefault();
+            $(this).parent().parent().find('.dropdown-menu').hide();
             $(this).next('ul').toggle();
         });
     });

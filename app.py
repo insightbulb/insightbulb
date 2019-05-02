@@ -82,7 +82,32 @@ def index():
 
 @app.route('/hawaii')
 def hawaii():
-    return render_template('hawaii.html')
+    station_url = [
+        'https://www.ndbc.noaa.gov/station_page.php?station=51211', 
+        'https://www.ndbc.noaa.gov/station_page.php?station=51210',
+        'https://www.ndbc.noaa.gov/station_page.php?station=51202',
+        'https://www.ndbc.noaa.gov/station_page.php?station=51212',
+        'https://www.ndbc.noaa.gov/station_page.php?station=51201', 
+        'https://www.ndbc.noaa.gov/station_page.php?station=51213',
+        'https://www.ndbc.noaa.gov/station_page.php?station=51205',
+        'https://www.ndbc.noaa.gov/station_page.php?station=51206',
+        'https://www.ndbc.noaa.gov/station_page.php?station=51208'
+    ]
+
+    pearl_harbor = get_wave_data(station_url[0])
+    kaneohe_bay = get_wave_data(station_url[1])
+    mokapu_point = get_wave_data(station_url[2])
+    barbers_point = get_wave_data(station_url[3])
+    waimea_bay = get_wave_data(station_url[4])
+    kaumalapau = get_wave_data(station_url[5])
+    pauwela = get_wave_data(station_url[6])
+    hilo = get_wave_data(station_url[7])
+    hanalei = get_wave_data(station_url[8])
+
+    return render_template('hawaii.html', pearl_harbor=pearl_harbor, kaneohe_bay=kaneohe_bay, 
+                            mokapu_point=mokapu_point, barbers_point=barbers_point, 
+                            waimea_bay=waimea_bay, kaumalapau=kaumalapau, pauwela=pauwela, hilo=hilo, 
+                            hanalei=hanalei)
 
 
 @app.route('/show-tide-extrema')

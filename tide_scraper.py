@@ -82,7 +82,6 @@ def get_lunar_data(station):
 # Get Hawaii Wave Heights
 def get_wave_data(station_url):
     wave_data = list()
-    trimmed_data = list()
     wave_http = httplib2.Http()
     wave_status, wave_response = wave_http.request(station_url)
     soup = BeautifulSoup(wave_response, 'html.parser')
@@ -90,7 +89,6 @@ def get_wave_data(station_url):
     wave_table = soup.find("table", attrs={'id': 'contenttable'}).findAll('table')[1].findAll('tr')[1:]
 
     for tag in wave_table:
-        wave_data.append(tag.text)
-
-    
+        wave_data.append(tag.findAll("td")[2].text)
+    print(len(wave_data))
     return wave_data

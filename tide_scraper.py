@@ -1,6 +1,5 @@
 import httplib2
 from bs4 import BeautifulSoup
-import re
 
 http = httplib2.Http()
 main = 'https://tidesandcurrents.noaa.gov/stations.html'
@@ -64,7 +63,7 @@ def get_station_by_region(region):
 
 
 def get_lunar_data(station):
-    tide_data = list()
+    lunar_data = list()
     trimmed_data = list()
     tide_http = httplib2.Http()
     lunar_url = "https://tidesandcurrents.noaa.gov/harcon.html?id=%s" % (station,)

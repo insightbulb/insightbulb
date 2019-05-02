@@ -71,7 +71,6 @@ def index():
         ld = get_lunar_data(station_data[0])
         for data in ld:
             lunar_data.append(data)
-        
 
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
@@ -103,8 +102,6 @@ def hawaii():
     hilo = get_wave_data(station_url[7])
     hanalei = get_wave_data(station_url[8])
 
-    
-    
     return render_template('hawaii.html', pearl_harbor=pearl_harbor, kaneohe_bay=kaneohe_bay, 
                             mokapu_point=mokapu_point, barbers_point=barbers_point, 
                             waimea_bay=waimea_bay, kaumalapau=kaumalapau, pauwela=pauwela, hilo=hilo, 

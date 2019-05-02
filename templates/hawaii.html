@@ -40,102 +40,88 @@
     <div class='container'>
         <div class="row">
             <div class="col">
-                <table class="wave-table" class="table">
-                    <caption>Pearl Harbor Entrance, HI</caption> 
+
+                <table class="wave-table table">
                     <tbody>  
+                        <thead>
+                            <tr>
+                                <th scope="col">Location</th>
+                                <th scope="col">Wave Height</th>
+                                <th scope="col">Dominant Wave Period</th>
+                                <th scope="col">Average Period</th>
+                                <th scope="col">Mean Wave Direction</th>
+                                <th scope="col">Water Temperature</th>
+                            </tr>
+                        </thead>
+
                         <tr>
+                            <th scope="row">Pearl Harbor Entrance, HI</th> 
                             {% for data in pearl_harbor %}
                                 <td>{{ data }}</td>
                             {% endfor %}
                         </tr>
-                    </tbody>
-                </table>
-
-                <table class="wave-table" class="table">
-                    <caption>Kaneohe Bay, HI</caption> 
-                    <tbody>  
+ 
                         <tr>
+                            <th scope="row">Kaneohe Bay, HI</th>
                             {% for data in kaneohe_bay %}
                                 <td>{{ data }}</td>
                             {% endfor %}
                         </tr>
-                    </tbody>
-                </table>
 
-                <table class="wave-table" class="table">
-                    <caption>Mokapu Point, HI</caption> 
-                    <tbody>  
+                         
                         <tr>
-                        {% for data in mokapu_point %}
-                            <td>{{ data }}</td>
-                        {% endfor %}
+                            <th scope="row">Mokapu Point, HI</th>
+                            {% for data in mokapu_point %}
+                                <td>{{ data }}</td>
+                            {% endfor %}
                         </tr>
-                    </tbody>
-                </table>
+                        
+                        <tr>
+                            <th scope="row">Barbers Point, Kalaeloa, HI</th>
+                            {% for data in barbers_point %}
+                                <td>{{ data }}</td>
+                            {% endfor %}
+                        </tr>
 
-                <table class="wave-table" class="table">
-                    <caption>Waimea Bay, HI</caption> 
-                    <tbody>  
                         <tr>
-                        {% for data in waimea_bay %}
-                            <td>{{ data }}</td>
-                        {% endfor %}
+                            <th scope="row">Waimea Bay, HI</th>
+                            {% for data in waimea_bay %}
+                                <td>{{ data }}</td>
+                            {% endfor %}
                         </tr>
-                    </tbody>
-                </table>
-                
-                <table class="wave-table" class="table">
-                    <caption>Kaumalapau Southwest, Lanai, HI</caption> 
-                    <tbody>  
-                        <tr>
-                        {% for data in kaumalapau %}
-                            <td>{{ data }}</td>
-                        {% endfor %}
-                        </tr>
-                    </tbody>
-                </table>
 
-                <table class="wave-table" class="table">
-                    <caption>Pauwela, Maui, HI</caption> 
-                    <tbody>  
+                          
                         <tr>
-                        {% for data in pauwela %}
-                            <td>{{ data }}</td>
-                        {% endfor %}
+                            <th scope="row">Kaumalapau Southwest, Lanai, HI</th>
+                            {% for data in kaumalapau %}
+                                <td>{{ data }}</td>
+                            {% endfor %}
                         </tr>
-                    </tbody>
-                </table>
 
-                <table class="wave-table" class="table">
-                    <caption>Hilo, Hawaii, HI</caption> 
-                    <tbody>  
+                        
                         <tr>
-                        {% for data in pauwela %}
-                            <td>{{ data }}</td>
-                        {% endfor %}
+                            <th scope="row">Pauwela, Maui, HI</th>
+                            {% for data in pauwela %}
+                                <td>{{ data }}</td>
+                            {% endfor %}
                         </tr>
-                    </tbody>
-                </table>
 
-                <table class="wave-table" class="table">
-                    <caption>Hilo, Hawaii, HI</caption> 
-                    <tbody>  
+                        
                         <tr>
-                        {% for data in hilo %}
-                            <td>{{ data }}</td>
-                        {% endfor %}
+                            <th scope="row">Hilo, Hawaii, HI</th> 
+                            {% for data in hilo %}
+                                <td>{{ data }}</td>
+                            {% endfor %}
                         </tr>
-                    </tbody>
-                </table>
 
-                <table class="wave-table" class="table">
-                    <caption>Hanalei, Kauai, HI</caption> 
-                    <tbody>  
+                         
                         <tr>
-                        {% for data in hanalei %}
-                            <td>{{ data }}</td>
-                        {% endfor %}
+                            <th scope="row">Hanalei, Kauai, HI</th>
+                            {% for data in hanalei %}
+                                <td>{{ data }}</td>
+                            {% endfor %}
                         </tr>
+                        
                     </tbody>
                 </table>
 

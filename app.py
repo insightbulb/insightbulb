@@ -93,7 +93,6 @@ def hawaii():
         'https://www.ndbc.noaa.gov/station_page.php?station=51208'
     ]
 
-    print(get_wave_data(station_url[0]))
     pearl_harbor = get_wave_data(station_url[0])
     kaneohe_bay = get_wave_data(station_url[1])
     mokapu_point = get_wave_data(station_url[2])
@@ -107,8 +106,8 @@ def hawaii():
     
     
     return render_template('hawaii.html', pearl_harbor=pearl_harbor, kaneohe_bay=kaneohe_bay, 
-                            mokapu_point=mokapu_point, waimea_bay=waimea_bay, 
-                            kaumalapau=kaumalapau, pauwela=pauwela, hilo=hilo, 
+                            mokapu_point=mokapu_point, barbers_point=barbers_point, 
+                            waimea_bay=waimea_bay, kaumalapau=kaumalapau, pauwela=pauwela, hilo=hilo, 
                             hanalei=hanalei)
 
 

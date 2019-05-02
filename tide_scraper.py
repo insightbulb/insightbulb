@@ -90,5 +90,4 @@ def get_wave_data(station_url):
 
     for tag in wave_table:
         wave_data.append(tag.findAll("td")[2].text)
-    print(len(wave_data))
     return wave_data

@@ -71,6 +71,7 @@ def index():
         ld = get_lunar_data(station_data[0])
         for data in ld:
             lunar_data.append(data)
+        
 
     return render_template('index.html', us_regions=us_regions,
                            local_stations=local_stations, devices=devices,
@@ -80,7 +81,9 @@ def index():
 
 @app.route('/hawaii')
 def hawaii():
-    return render_template('hawaii.html')
+    print(get_wave_data())
+    wave_data = get_wave_data()
+    return render_template('hawaii.html', wave_data=wave_data)
 
 
 @app.route('/show-tide-extrema')

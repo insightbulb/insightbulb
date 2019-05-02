@@ -63,7 +63,7 @@ def get_station_by_region(region):
 
 
 def get_lunar_data(station):
-    lunar_data = list()
+    tide_data = list()
     trimmed_data = list()
     tide_http = httplib2.Http()
     lunar_url = "https://tidesandcurrents.noaa.gov/harcon.html?id=%s" % (station,)
@@ -77,3 +77,22 @@ def get_lunar_data(station):
         trimmed_data.append(lunar_data[i])
 
     return trimmed_data
+
+# Get Hawaii Wave Heights
+def get_wave_data():
+    wave_data = list()
+    trimmed_data = list()
+    wave_http = httplib2.Http()
+    # wave_url = "http://www.pacioos.hawaii.edu/"
+    wave_url = "https://www.ndbc.noaa.gov/station_page.php?station=51211"
+    wave_status, wave_response = wave_http.request(wave_url)
+    soup = BeautifulSoup(wave_response, 'html.parser')
+    
+    # wave_table = soup.find("table", attrs={'class': 'dataTable'}).findAll("tr")[3].findAll("td")[6]
+    # wave_data.append(wave_table.text)
+
+    wave_table = soup.find("table", attrs={'id': 'contenttable'}).findAll('table')[1].findAll('tr')[1:]
+    # for tag in wave_table:
+    #     wave_data.append(tag.text)
+
+    return wave_table

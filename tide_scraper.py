@@ -1,5 +1,6 @@
 import httplib2
 from bs4 import BeautifulSoup
+import re
 
 http = httplib2.Http()
 main = 'https://tidesandcurrents.noaa.gov/stations.html'
@@ -79,20 +80,17 @@ def get_lunar_data(station):
     return trimmed_data
 
 # Get Hawaii Wave Heights
-def get_wave_data():
+def get_wave_data(station_url):
     wave_data = list()
     trimmed_data = list()
     wave_http = httplib2.Http()
-    # wave_url = "http://www.pacioos.hawaii.edu/"
-    wave_url = "https://www.ndbc.noaa.gov/station_page.php?station=51211"
-    wave_status, wave_response = wave_http.request(wave_url)
+    wave_status, wave_response = wave_http.request(station_url)
     soup = BeautifulSoup(wave_response, 'html.parser')
-    
-    # wave_table = soup.find("table", attrs={'class': 'dataTable'}).findAll("tr")[3].findAll("td")[6]
-    # wave_data.append(wave_table.text)
 
     wave_table = soup.find("table", attrs={'id': 'contenttable'}).findAll('table')[1].findAll('tr')[1:]
-    # for tag in wave_table:
-    #     wave_data.append(tag.text)
 
-    return wave_table
+    for tag in wave_table:
+        wave_data.append(tag.text)
+
+    
+    return wave_data

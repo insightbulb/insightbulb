@@ -3,6 +3,10 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+caption {
+    caption-side: top;
+}
+
 .scrollable-menu {
     height: auto;
     max-height: 200px;

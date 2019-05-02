@@ -81,9 +81,10 @@ def index():
 
 @app.route('/hawaii')
 def hawaii():
-    print(get_wave_data())
-    wave_data = get_wave_data()
-    return render_template('hawaii.html', wave_data=wave_data)
+    station_url = ['https://www.ndbc.noaa.gov/station_page.php?station=51211']
+    print(get_wave_data(station_url[0]))
+    pearl_harbor = get_wave_data(station_url[0])
+    return render_template('hawaii.html', pearl_harbor=pearl_harbor)
 
 
 @app.route('/show-tide-extrema')

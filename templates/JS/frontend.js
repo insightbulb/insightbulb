@@ -95,7 +95,7 @@ $(function () {
             $('#station-loader').hide();
             $('#station-success').show();
             window.location.reload();
-        }, 5000);
+        }, 7000);
     });
 });
 

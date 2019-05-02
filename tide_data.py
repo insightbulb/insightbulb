@@ -28,19 +28,17 @@ def get_data_points(current_time, tide_times):
     return results
 
 
-def get_light_intensity(data_points):
+def get_light_intensity(data_points, ref_time):
     # Get fraction of tide
-    # light_intensity = time.mktime(data_points[0][0].timetuple())
-    prev_time = data_points[0]
-    current_time = data_points[1]
+    current_time = datetime.now()
     next_time = data_points[2]
 
-    prev_time_seconds = float(time.mktime(prev_time.timetuple()))
+    ref_time_seconds = float(time.mktime(ref_time.timetuple()))
     current_time_seconds = float(time.mktime(current_time.timetuple()))
     next_time_seconds = float(time.mktime(next_time.timetuple()))
 
-    numerator = (next_time_seconds - prev_time_seconds) / 10
-    denominator = current_time_seconds - prev_time_seconds
-    light_intensity = (numerator / denominator) * 100
+    numerator = next_time_seconds - current_time_seconds
+    denominator = next_time_seconds - ref_time_seconds
+    light_intensity = numerator / denominator
 
     return light_intensity

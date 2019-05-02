@@ -5,8 +5,10 @@ from tide_data import split_times_to_datetimes, get_data_points, get_light_inten
 
 
 from datetime import datetime
-import threading
+from time import sleep
 
+import threading
+from multiprocessing import Process
 import httplib2
 import re
 
@@ -121,7 +123,7 @@ def tidal_flow(times):
     split_times = list()
 
     # split_times contains elements in the form:
-    # ['2:51 ', 'AM', 'high 1.62 ft.']
+    # ['2:51 AM', 'high', '1.62 ft.']
     for tide in times:
         high_low = re.split('(low|high)', tide)
         split_times.append(high_low)
@@ -140,10 +142,10 @@ def tidal_flow(times):
 
     # Apply the ambient alert notification using a delayed thread
     delayed_transitions = [
-        TemperatureTransition(1700, duration=1000),
+        TemperatureTransition(1500, duration=1000),
         SleepTransition(duration=1000),
-        TemperatureTransition(6500, duration=1000),
-        TemperatureTransition(500, 500)]
+        TemperatureTransition(1500, duration=1000),
+        TemperatureTransition(500, duration=500)]
     delayed_alert_flow = Flow(
         count=2,
         action=Flow.actions.recover,
@@ -156,21 +158,32 @@ def tidal_flow(times):
     # Get current time in seconds, data points (prev tide time, current time, next tide time)
     # Data points are converted to datetime objects
     now = datetime.now()
-    tidal_datetimes = split_times_to_datetimes(split_times)
+    test_times = [['7:00 AM'], ['10:00 PM'], ['11:59 PM']]
+    tidal_datetimes = split_times_to_datetimes(test_times)
     data_points = get_data_points(now, tidal_datetimes)
+    print("DATA_POINTS", data_points)
 
     if len(data_points) > 0:
-        threading.Thread(target=continuous_tidal_brightness(data_points, my_bulb)).start()
-
+        print("GOT HERE!!")
         delay = (data_points.pop() - now).total_seconds()
-        threading.Timer(delay, lambda: my_bulb.start_flow(delayed_alert_flow)).start()
+        print("DELAY", delay)
+        p1 = Process(target=threading.Timer, args=(delay, lambda: my_bulb.start_flow(delayed_alert_flow,)))
+        p1.start()
+
+        p2 = Process(target=continuous_tidal_brightness, args=(data_points, my_bulb, now,))
+        p2.start()
+
+        p1.join()
+        p2.join()
 
     return split_times
 
 
-def continuous_tidal_brightness(tide_delta, bulb):
+def continuous_tidal_brightness(tide_delta, bulb, ref_time):
     while True:
-        brightness = get_light_intensity(tide_delta)
+        sleep(5)
+        brightness = get_light_intensity(tide_delta, ref_time)
+        print(brightness)
         bulb.set_brightness(brightness=brightness)
 
 

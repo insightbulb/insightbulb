@@ -213,3 +213,55 @@ $(function () {
         }
     });
 });
+
+
+//  Hawaii Local Data
+$(function () {
+    var wave_index = [];
+    var wave_points = [];
+    var count = 0;
+    $("tr").each(function () {
+        if (count < 6) {
+            wave_index.push($(this).find('th').text())
+            wave_points.push($(this).find('td').eq(0).text().replace('ft','').trim());
+        }
+        count++;
+    });
+
+    wave_index.splice(0, 1)
+
+    wave_points.splice(0, 1)
+
+    console.log(wave_index);
+    console.log(wave_points);
+    var ctxl = document.getElementById('waveChart').getContext('2d');
+    var myBarChart = new Chart(ctxl, {
+            type: 'bar',
+            data: {
+                labels: wave_index,
+                datasets: [{
+                label: "Wave Height",
+                data: wave_points,
+                backgroundColor: 'rgba(255, 142, 22, .1)',
+                borderColor: 'rgba(0, 25, 127, .7)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    categoryPercentage: 1,
+                    barPercentage: 0.5,
+                    gridLines: {
+                        offsetGridLines: false,
+                    }
+                }]
+            }
+        }
+    });
+});

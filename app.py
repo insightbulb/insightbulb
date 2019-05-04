@@ -3,7 +3,6 @@ from yeelight import *
 from tide_scraper import *
 from tide_data import split_times_to_datetimes, get_data_points, get_light_intensity
 
-
 from datetime import datetime
 from time import sleep
 
@@ -83,11 +82,11 @@ def index():
 @app.route('/hawaii')
 def hawaii():
     station_url = [
-        'https://www.ndbc.noaa.gov/station_page.php?station=51211', 
+        'https://www.ndbc.noaa.gov/station_page.php?station=51211',
         'https://www.ndbc.noaa.gov/station_page.php?station=51210',
         'https://www.ndbc.noaa.gov/station_page.php?station=51202',
         'https://www.ndbc.noaa.gov/station_page.php?station=51212',
-        'https://www.ndbc.noaa.gov/station_page.php?station=51201', 
+        'https://www.ndbc.noaa.gov/station_page.php?station=51201',
         'https://www.ndbc.noaa.gov/station_page.php?station=51213',
         'https://www.ndbc.noaa.gov/station_page.php?station=51205',
         'https://www.ndbc.noaa.gov/station_page.php?station=51206',
@@ -104,10 +103,10 @@ def hawaii():
     hilo = get_wave_data(station_url[7])
     hanalei = get_wave_data(station_url[8])
 
-    return render_template('hawaii.html', pearl_harbor=pearl_harbor, kaneohe_bay=kaneohe_bay, 
-                            mokapu_point=mokapu_point, barbers_point=barbers_point, 
-                            waimea_bay=waimea_bay, kaumalapau=kaumalapau, pauwela=pauwela, hilo=hilo, 
-                            hanalei=hanalei)
+    return render_template('hawaii.html', pearl_harbor=pearl_harbor, kaneohe_bay=kaneohe_bay,
+                           mokapu_point=mokapu_point, barbers_point=barbers_point,
+                           waimea_bay=waimea_bay, kaumalapau=kaumalapau, pauwela=pauwela, hilo=hilo,
+                           hanalei=hanalei)
 
 
 @app.route('/show-tide-extrema')
@@ -192,7 +191,7 @@ def tidal_flow(times):
         print("GOT HERE!!")
         delay = (data_points.pop() - now).total_seconds()
         print("DELAY", delay)
-        p1 = Process(target=threading.Timer, args=(delay, lambda: my_bulb.start_flow(delayed_alert_flow,)))
+        p1 = Process(target=threading.Timer, args=(delay, lambda: my_bulb.start_flow(delayed_alert_flow, )))
         p1.start()
 
         p2 = Process(target=continuous_tidal_brightness, args=(data_points, my_bulb, now,))

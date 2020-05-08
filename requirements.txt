@@ -2,3 +2,4 @@ flask
 yeelight
 httplib2
 bs4
+gunicorn
